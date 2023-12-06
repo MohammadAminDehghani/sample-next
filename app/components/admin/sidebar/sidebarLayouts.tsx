@@ -11,6 +11,7 @@ import {
   UsersIcon,
   XMarkIcon,
   ShoppingBagIcon,
+  ClipboardDocumentListIcon
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -39,18 +40,20 @@ export default function SidebarLayout({ open, setOpen, pageName }: props) {
       enabled: true,
     },
     {
-      name: "Products",
-      href: "/admin/products",
-      icon: ShoppingBagIcon,
-      current: pageName === "products",
-      enabled: user.canAccess("manage_products"),
+      name: "Articles",
+      href: "/admin/articles",
+      icon: ClipboardDocumentListIcon,
+      current: pageName === "articles",
+      enabled: true,
+      //enabled: user.canAccess("manage_articles"),
     },
     {
       name: "Users",
       href: "/admin/users",
       icon: UsersIcon,
       current: pageName === "users",
-      enabled: user.canAccess("manage_users"),
+      enabled: true,
+      //enabled: user.canAccess("manage_users"),
     },
   ];
 

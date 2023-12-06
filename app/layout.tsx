@@ -26,13 +26,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { user, error, loading } = useAuth();
+  //const { user, error, loading } = useAuth();
   //console.log(user, error, loading);
 
-  useEffect(() => {
-    store.dispatch(updateUser(user));
-    store.dispatch(updateLoadingUser(loading));
-  }, [user, error]);
+  // useEffect(() => {
+  //   store.dispatch(updateUser(user));
+  //   store.dispatch(updateLoadingUser(loading));
+  // }, [user, error]);
 
   return (
     <html lang="en">

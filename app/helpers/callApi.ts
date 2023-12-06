@@ -4,7 +4,8 @@ import validationErrors from "../exceptions/validationErrors";
 
 const callApi = () => {
     const axiosInstance = axios.create({
-        baseURL: 'http://localhost:5000/api'
+        baseURL: 'http://localhost:3001/api',
+        withCredentials: true, // Allow sending cookies with requests
     })
 
     axiosInstance.interceptors.request.use(
