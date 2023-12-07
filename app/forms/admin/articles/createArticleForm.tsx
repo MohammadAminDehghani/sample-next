@@ -48,7 +48,6 @@ const CreateArticleForm = withFormik<LoginFormProps, StoreArticleInterface>({
     validationSchema: FormValidationSchema,
     handleSubmit: async (values, { props, setFieldError }) => {
         try {
-            console.log('values', values)
             const res = await StoreArticle(values);
             if (res.status === 200) {
                 toast.success("The article was created successfully");

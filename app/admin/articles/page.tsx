@@ -30,7 +30,7 @@ const AdminArticles = ({
   const user = useSelector(selectUser);
   const router = useRouter();
 
-  page === undefined ? router.push('/admin/articles?page=1') : ''
+  //page === undefined ? router.push('/admin/articles?page=1') : ''
 
   const { data , error, mutate } = useSWR(
     {

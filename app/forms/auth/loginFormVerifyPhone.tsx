@@ -49,7 +49,7 @@ const LoginFormVerifyPhone = withFormik<LoginFormProps, LoginFormValuesInterface
             token: localStorage.getItem('login-token'),
             phone : localStorage.getItem('phone')
         }
-         console.log(valuesForSend);
+        //console.log(valuesForSend);
         try {
             
             const res = await callApi().post('/auth/login/verify-phone', valuesForSend);
@@ -63,7 +63,7 @@ const LoginFormVerifyPhone = withFormik<LoginFormProps, LoginFormValuesInterface
                 //     sameSite: 'lax'
                 // });
                 toast.success('Your Login has been verified');
-                console.log(res.data?.user?.token)
+                //console.log(res.data?.user?.token)
                 storeLoginToken(res.data?.user?.token); 
                 props.clearToken();
                 //props.router.push('/panel');

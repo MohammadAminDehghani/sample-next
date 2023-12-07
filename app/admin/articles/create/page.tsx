@@ -9,7 +9,7 @@ import CreateArticleForm from "@/app/forms/admin/articles/createArticleForm";
 
 const ProductCreate = () => {
   const router = useRouter()
-  const user = useSelector(selectUser);
+  //const user = useSelector(selectUser);
     {/* <CanAccess permissions="add_new_product"> */}
 
     {/* </CanAccess> */}

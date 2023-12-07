@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import User, { UserType } from "../models/user";
+import { createSelector } from 'reselect';
 
 interface AuthState {
   loadingUser?: boolean;
@@ -33,8 +34,13 @@ export const authSlice = createSlice({
 
 export const { updatePhoneVerifyToken, updateUser, updateLoadingUser } = authSlice.actions;
 
+const getUser = (state: RootState) => state.auth.user;
+export const selectUser = createSelector(
+  getUser,
+  (user) => new User(user)
+);
+
 export const selectPhoneVerifyToken = (state: RootState) => state.auth.phoneVerifyToken;
-export const selectUser = (state: RootState) => new User(state.auth.user);
 export const selectLoadingUser = (state: RootState) => state.auth.loadingUser;
 
 export default authSlice.reducer;

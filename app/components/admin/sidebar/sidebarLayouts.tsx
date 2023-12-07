@@ -29,7 +29,7 @@ interface props {
 }
 
 export default function SidebarLayout({ open, setOpen, pageName }: props) {
-  const user = useSelector(selectUser);
+  //const user = useSelector(selectUser);
 
   const navigation = [
     {

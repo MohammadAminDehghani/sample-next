@@ -11,7 +11,7 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  console.log(req?.body?.token)
+  //console.log(req?.body?.token)
   //res.status(200).end( JSON.stringify(req.body)  )
   res.setHeader(
     'Set-Cookie',
