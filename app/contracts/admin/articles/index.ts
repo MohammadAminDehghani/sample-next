@@ -1,4 +1,4 @@
-export interface CreateArticleInterface {
+export interface StoreArticleInterface {
     id: string;
     user: string;
     title: string;

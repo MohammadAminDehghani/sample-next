@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import AdminPanelLayout from "@/app/components/adminPanelLayout";
 import Modal from "@/app/components/shared/modal";
 import { useRouter } from "next/navigation";
-import CreateArticleForm from "@/app/forms/admin/articles/createProductForm";
+import CreateArticleForm from "@/app/forms/admin/articles/createArticleForm";
 import useSWR from "swr";
 import Article from "@/app/models/article";
 import LoadingBox from "@/app/components/shared/loadingBox";
@@ -72,12 +72,13 @@ const AdminArticles = ({
             </h1>
           </div>
           <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-            {user.canAccess("add_new_article") && (
+            {!user.canAccess("add_new_article") && (
               <button
                 // onClick={() => setShowAddArticle(true)}
                 onClick={() => {
-                  setShowCreateArticle(true);
+                  //setShowCreateArticle(true);
                   //router.push('/admin/products?create-product')
+                  router.push('/admin/articles/create')
                 }}
                 type="submit"
                 className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"

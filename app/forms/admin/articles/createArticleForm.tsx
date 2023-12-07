@@ -1,11 +1,11 @@
 import { useRouter } from "next/router";
 import InnerCreateArticleForm from "@/app/components/admin/articles/innerCreateProductForm";
-import { CreateArticleInterface } from "@/app/contracts/admin/articles";
+import { StoreArticleInterface } from "@/app/contracts/admin/articles";
 import validationErrors from "@/app/exceptions/validationErrors";
 import { withFormik } from "formik";
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
-import { CreateArticle, GetArticles } from "@/app/services/article";
+import { StoreArticle } from "@/app/services/article";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const FormValidationSchema = yup.object({
@@ -31,7 +31,7 @@ interface LoginFormProps {
 }
 //const router = useRouter
 
-const CreateArticleForm = withFormik<LoginFormProps, CreateArticleInterface>({
+const CreateArticleForm = withFormik<LoginFormProps, StoreArticleInterface>({
     mapPropsToValues: (props) => ({
         id: props.id ?? '',
         user: props.user ?? '',
@@ -48,10 +48,11 @@ const CreateArticleForm = withFormik<LoginFormProps, CreateArticleInterface>({
     validationSchema: FormValidationSchema,
     handleSubmit: async (values, { props, setFieldError }) => {
         try {
-            const res = await CreateArticle(values);
+            console.log('values', values)
+            const res = await StoreArticle(values);
             if (res.status === 200) {
                 toast.success("The article was created successfully");
-                GetArticles;
+                //GetArticles;
                 // Redirect to '/admin/articles' after successful creation
                 //window.location.href = '/admin/articles';
                 props.router.push('/admin/articles')

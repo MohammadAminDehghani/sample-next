@@ -33,7 +33,7 @@ export default function ArticleListItem({ article, articlesMutate }: Props) {
         );
         return;
       }
-      toast.success("The article can't delete");
+      toast.error("The article can't delete");
       console.log(error);
     }
   };

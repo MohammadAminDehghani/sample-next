@@ -1,6 +1,6 @@
 import callApi from "../helpers/callApi";
 import {
-  CreateArticleInterface,
+  StoreArticleInterface,
   EditArticleInterface,
 } from "@/app/contracts/admin/articles";
 
@@ -12,8 +12,9 @@ export async function GetArticles({ page = 1, per_page = 10 }) {
   return { articles: res?.data };
 }
 
-export async function CreateArticle(values: CreateArticleInterface) {
-  return await callApi().post("/articles/create", {
+export async function StoreArticle(values: StoreArticleInterface) {
+  console.log('values',values)
+  return await callApi().post("/admin/articles", {
     ...values,
     body: values.body,
   });
@@ -21,18 +22,18 @@ export async function CreateArticle(values: CreateArticleInterface) {
 
 export async function EditArticle(articleId: number | string) {
   if (articleId !== 'undefined') {
-    let res = await callApi().get(`/articles/${articleId}`, {});
+    let res = await callApi().get(`/admin/articles/${articleId}`, {});
     return res?.data?.article;
   }
 }
 
 export async function UpdateArticle(values: EditArticleInterface) {
-  return await callApi().post(`/articles/${values.id}/update`, {
+  return await callApi().post(`/admin/articles/${values.id}/update`, {
     ...values,
     body: values.body,
   });
 }
 
 export async function DeleteArticle(articleId: string) {
-  return await callApi().post(`/articles/${articleId}/delete`, {});
+  return await callApi().delete(`/admin/articles/${articleId}/delete`, {});
 }
