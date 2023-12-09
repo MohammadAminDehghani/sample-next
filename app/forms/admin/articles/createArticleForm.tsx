@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import InnerCreateArticleForm from "@/app/components/admin/articles/innerCreateProductForm";
+import InnerCreateArticleForm from "@/app/components/admin/articles/innerCreateArticleForm";
 import { StoreArticleInterface } from "@/app/contracts/admin/articles";
 import validationErrors from "@/app/exceptions/validationErrors";
 import { withFormik } from "formik";

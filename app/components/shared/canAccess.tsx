@@ -10,6 +10,15 @@ interface Props {
 }
 
 const CanAccess = ({ children, permissions }: Props) => {
+
+
+  // todo : felan vase inke kar nakone
+  return <>{children}</>;
+
+
+
+
+  
   const router = useRouter();
   const { user : userData } = useAuth();
   let user = new User(userData);

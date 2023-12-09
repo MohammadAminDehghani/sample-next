@@ -19,10 +19,11 @@ export async function StoreArticle(values: StoreArticleInterface) {
   });
 }
 
-export async function EditArticle(articleId: number | string) {
+export async function EditArticle(articleId: string | string) {
   if (articleId !== 'undefined') {
     let res = await callApi().get(`/admin/articles/${articleId}`, {});
-    return res?.data?.article;
+    console.log('res', res?.data)
+    return res?.data;
   }
 }
 
