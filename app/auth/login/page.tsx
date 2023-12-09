@@ -5,9 +5,9 @@ import { useCookies } from 'react-cookie';
 
 // my imports
 import 'bootstrap/dist/css/bootstrap.min.css';
-import LoginFormPhone from '@/app/forms/auth/loginFormPhone';
-import { useAppDispatch } from '@/app/hooks';
-import { updatePhoneVerifyToken } from '@/app/store/auth';
+import LoginFormPhone from '@/app/tools/forms/auth/loginFormPhone';
+import { useAppDispatch } from '@/app/tools/hooks';
+import { updatePhoneVerifyToken } from '@/app/tools/store/auth';
 import { useRouter } from 'next/navigation';
 
 const Login = () => {

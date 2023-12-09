@@ -7,14 +7,14 @@ import { Provider } from "react-redux";
 import { NextPage } from "next";
 import { ReactElement, ReactNode, useEffect } from "react";
 
-import store from "./../app/store";
+import store from "./tools/store";
 
 //Toast
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Header from "./components/layouts/header";
-import useAuth from "./hooks/useAuth";
-import { updateLoadingUser, updateUser } from "./store/auth";
+import Header from "@/app/tools/components/layouts/header";
+import useAuth from "@/app/tools/hooks/useAuth";
+import { updateLoadingUser, updateUser } from "./tools/store/auth";
 
 // export const metadata = {
 //   title: "Next.js",

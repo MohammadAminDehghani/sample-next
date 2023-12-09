@@ -1,20 +1,19 @@
 "use client";
 
-import { useSelector } from "react-redux";
-import CreateProductForm from "@/app/forms/admin/products/createProductForm";
-import { selectUser } from "@/app/store/auth";
 import { useRouter } from "next/navigation";
-import CanAccess from "@/app/components/shared/canAccess";
-import CreateArticleForm from "@/app/forms/admin/articles/createArticleForm";
+import CreateArticleForm from "@/app/tools/forms/admin/articles/createArticleForm";
 
 const ProductCreate = () => {
-  const router = useRouter()
+  const router = useRouter();
   //const user = useSelector(selectUser);
-    {/* <CanAccess permissions="add_new_product"> */}
+  {
+    /* <CanAccess permissions="add_new_product"> */
+  }
 
-    {/* </CanAccess> */}
+  {
+    /* </CanAccess> */
+  }
   return (
-    
     <>
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="sm:flex sm:items-center">
@@ -37,9 +36,5 @@ const ProductCreate = () => {
     </>
   );
 };
-
-// ProductCreate.getLayout = (page) => (
-//   <AdminPanelLayout pageName="products.create">{page}</AdminPanelLayout>
-// );
 
 export default ProductCreate;

@@ -1,11 +1,10 @@
 "use client";
 
 import useSWR from "swr";
-import { EditArticle } from "@/app/services/article";
+import { EditArticle } from "@/app/tools/services/db/article";
 import { useRouter } from "next/navigation";
-import EditArticleForm from "@/app/forms/admin/articles/editArticleForm";
-import AdminPanelLayout from "@/app/components/adminPanelLayout";
-import CanAccess from "@/app/components/shared/canAccess";
+import EditArticleForm from "@/app/tools/forms/admin/articles/editArticleForm";
+import CanAccess from "@/app/tools/components/shared/canAccess";
 
 const ArticleEdid = ({ params }: any) => {
   const { data: article, error } = useSWR(`${params.articleId}`, EditArticle);

@@ -1,19 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import AdminPanelLayout from "@/app/components/adminPanelLayout";
-import Modal from "@/app/components/shared/modal";
+import Modal from "@/app/tools/components/shared/modal";
 import { useRouter } from "next/navigation";
-import CreateArticleForm from "@/app/forms/admin/articles/createArticleForm";
+import CreateArticleForm from "@/app/tools/forms/admin/articles/createArticleForm";
 import useSWR from "swr";
-import Article from "@/app/models/article";
-import LoadingBox from "@/app/components/shared/loadingBox";
-import ReactCustomPaginate from "@/app/components/shared/reactCutsomPaginate";
-import EmptyList from "@/app/components/shared/emptyList";
-import ArticleListItem from "@/app/components/admin/articles/articleListItem";
+import Article from "@/app/tools/models/article";
+import LoadingBox from "@/app/tools/components/shared/loadingBox";
+import ReactCustomPaginate from "@/app/tools/components/shared/reactCutsomPaginate";
+import EmptyList from "@/app/tools/components/shared/emptyList";
+import ArticleListItem from "@/app/tools/components/admin/articles/articleListItem";
 import { useSelector } from "react-redux";
-import { selectUser } from "@/app/store/auth";
-import { GetArticles } from "@/app/services/article";
+import { selectUser } from "@/app/tools/store/auth";
+import { GetArticles } from "@/app/tools/services/db/article";
 
 interface Props {
   searchParams: {
@@ -22,26 +20,21 @@ interface Props {
   };
 }
 
-
-const AdminArticles = ({
-  searchParams: { page, per_page },
-}: Props) => {
-    
+const AdminArticles = ({ searchParams: { page, per_page } }: Props) => {
   const user = useSelector(selectUser);
   const router = useRouter();
 
   //page === undefined ? router.push('/admin/articles?page=1') : ''
 
-  const { data , error, mutate } = useSWR(
+  const { data, error, mutate } = useSWR(
     {
       url: "/admin/articles",
       page,
     },
     GetArticles
   );
-  //const articles = data;
+
   const total_page = 1;
-  //console.log('articles', articles)
 
   const loadingArticles = !data?.articles && !error;
 
@@ -55,14 +48,13 @@ const AdminArticles = ({
 
   return (
     <>
-      {user.canAccess("add_new_article") &&
-        (
-          <Modal setShow={() => setShowCreateArticle(false)}>
-            <div className="p-4 inline-block w-full max-w-4xl mt-20 mb-20 ml-20 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg opacity-100 scale-100">
-              <CreateArticleForm router={router}   />
-            </div>
-          </Modal>
-        )}
+      {user.canAccess("add_new_article") && (
+        <Modal setShow={() => setShowCreateArticle(false)}>
+          <div className="p-4 inline-block w-full max-w-4xl mt-20 mb-20 ml-20 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg opacity-100 scale-100">
+            <CreateArticleForm router={router} />
+          </div>
+        </Modal>
+      )}
 
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="sm:flex sm:items-center">
@@ -78,7 +70,7 @@ const AdminArticles = ({
                 onClick={() => {
                   //setShowCreateArticle(true);
                   //router.push('/admin/products?create-product')
-                  router.push('/admin/articles/create')
+                  router.push("/admin/articles/create");
                 }}
                 type="submit"
                 className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
@@ -160,6 +152,5 @@ const AdminArticles = ({
     </>
   );
 };
-
 
 export default AdminArticles;

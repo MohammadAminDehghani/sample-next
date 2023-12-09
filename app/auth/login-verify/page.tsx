@@ -8,12 +8,12 @@ import { useCookies } from "react-cookie";
 
 // my imports
 import "bootstrap/dist/css/bootstrap.min.css";
-import LoginFormVerifyPhone from "@/app/forms/auth/loginFormVerifyPhone";
-import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import LoginFormVerifyPhone from "@/app/tools/forms/auth/loginFormVerifyPhone";
+import { useAppDispatch, useAppSelector } from "@/app/tools/hooks";
 import {
   selectPhoneVerifyToken,
   updatePhoneVerifyToken,
-} from "@/app/store/auth";
+} from "@/app/tools/store/auth";
 import { useRouter } from "next/navigation";
 
 const LoginVerify = () => {

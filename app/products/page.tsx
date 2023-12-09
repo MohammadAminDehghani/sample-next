@@ -1,8 +1,4 @@
-import { Metadata, ResolvingMetadata } from "next";
-import Link from "next/link";
-import { toast } from "react-toastify";
-import ReactCustomPaginate from "../components/shared/reactCutsomPaginate";
-import ProductList from "../components/products/productList";
+import ProductList from "@/app/tools/components/products/productList";
 
 interface Props {
   searchParams: {
