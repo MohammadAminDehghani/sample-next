@@ -48,6 +48,22 @@ export default function SidebarLayout({ open, setOpen, pageName }: props) {
       //enabled: user.canAccess("manage_articles"),
     },
     {
+      name: "Categories",
+      href: "/admin/categories",
+      icon: ClipboardDocumentListIcon,
+      current: pageName === "categories",
+      enabled: true,
+      //enabled: user.canAccess("manage_categories"),
+    },
+    {
+      name: "Tags",
+      href: "/admin/tags",
+      icon: ClipboardDocumentListIcon,
+      current: pageName === "tags",
+      enabled: true,
+      //enabled: user.canAccess("manage_tags"),
+    },
+    {
       name: "Users",
       href: "/admin/users",
       icon: UsersIcon,
