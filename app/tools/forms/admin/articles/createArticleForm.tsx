@@ -30,6 +30,7 @@ interface LoginFormProps {
 }
 //const router = useRouter
 
+
 const CreateArticleForm = withFormik<LoginFormProps, StoreArticleInterface>({
     mapPropsToValues: (props) => ({
         id: props.id ?? '',
@@ -46,6 +47,7 @@ const CreateArticleForm = withFormik<LoginFormProps, StoreArticleInterface>({
     }),
     validationSchema: FormValidationSchema,
     handleSubmit: async (values, { props, setFieldError }) => {
+        
         try {
             const res = await StoreArticle(values);
             if (res.status === 200) {

@@ -2,9 +2,21 @@
 
 import { useRouter } from "next/navigation";
 import CreateArticleForm from "@/app/tools/forms/admin/articles/createArticleForm";
+import useSWR from "swr";
+import { GetCategories } from "@/app/tools/services/db/category";
 
 const ProductCreate = () => {
   const router = useRouter();
+
+
+  // const { data , error, mutate } = useSWR(
+  //   {},
+  //   GetCategories
+  // );
+
+  // console.log(data?.categories);
+
+
   //const user = useSelector(selectUser);
   {
     /* <CanAccess permissions="add_new_product"> */

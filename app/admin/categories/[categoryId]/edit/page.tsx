@@ -18,7 +18,7 @@ const CategoryEdit = ({ params }: any) => {
             <div className="sm:flex sm:items-center">
               <div className="sm:flex-auto">
                 <h1 className="text-xl font-semibold text-gray-900">
-                  create categories
+                  Edit category
                 </h1>
               </div>
             </div>

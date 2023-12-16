@@ -96,34 +96,43 @@ const AdminCategories = ({ searchParams: { page, per_page } }: Props) => {
                           scope="col"
                           className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
                         >
-                          Category Number
+                          Index
+                        </th>
+                        <th
+                          scope="col"
+                          className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                        >
+                          Category Id
                         </th>
                         <th
                           scope="col"
                           className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                         >
-                          Title
+                          Name
                         </th>
-                        {/* <th
+                        <th
                           scope="col"
                           className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                         >
-                          Description
-                        </th> */}
+                          Parent
+                        </th>
                         <th
                           scope="col"
-                          className="relative py-3.5 pl-3 pr-4 sm:pr-6"
-                        ></th>
+                          className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
+                        >Action</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
-                      {data?.categories.map((category: Category) => (
-                        <CategoryListItem
-                          key={category.id}
-                          category={category}
-                          categoriesMutate={mutate}
-                        />
-                      ))}
+                      {data?.categories.map(
+                        (category: Category, index: number) => (
+                          <CategoryListItem
+                            key={category.id}
+                            index={index + 1}
+                            category={category}
+                            categoriesMutate={mutate}
+                          />
+                        )
+                      )}
                     </tbody>
                   </table>
                 ) : (

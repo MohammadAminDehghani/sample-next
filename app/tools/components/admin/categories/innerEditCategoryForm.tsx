@@ -2,14 +2,41 @@ import { Form, FormikProps } from "formik";
 import Input from "@/app/tools/components/shared/form/input";
 import { EditCategoryInterface } from "@/app/tools/contracts/admin/categories";
 import TextArea from "@/app/tools/components/shared/form/textarea";
+import useSWR from "swr";
+import { GetCategories } from "@/app/tools/services/db/category";
+import SelectBox from "../../shared/form/selectbox";
 
 const InnerEditCategoryForm = (props: FormikProps<EditCategoryInterface>) => {
+
+  const { data, error, mutate } = useSWR({}, GetCategories);
+
+  const options: any = [
+    {
+      label: "It doesn't have any parents",
+      value: "parent",
+    },
+  ];
+  let defaultValue = undefined;
+
+  data?.categories.map((category: any) => {
+    options.push({
+      label: category.name,
+      value: category.id,
+      
+    });
+    if (props.values.id === category.id){
+      defaultValue = String(category.id);
+    }
+  });
+
+  console.log('props', props)
+
   return (
     <Form>
       <div className="p-6 grid grid-cols-1 gap-y-6 sm:grid-cols-4 sm:gap-x-8">
         <div className="sm:col-span-2">
           <Input
-            name="title"
+            name="name"
             label="category name"
             labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             inputClassName="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -17,32 +44,21 @@ const InnerEditCategoryForm = (props: FormikProps<EditCategoryInterface>) => {
         </div>
 
         <div className="sm:col-span-2">
-          <Input
-            name="slug"
-            label="category's slug"
+          <SelectBox
+            name="parent"
+            options={options}
+            defaultValue={props.values.parent}
+            label="category's parent"
             labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            inputClassName="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
 
-        {/* <div className="sm:col-span-4">
-          <SelectBox 
-            name="category"
-            label="cars-category"
-            SelectClassName="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            options={[
-              {label: 'car', value:'1'},
-              {label: 'laptop', value:'2'},
-              {label: 'phone', value:'3'},
-            ]}
-          />
-        </div> */}
 
         <div className="sm:col-span-4">
           <TextArea
-            name="body"
-            label="rticle body"
-            rows={7}
+            name="description"
+            label="about category"
+            rows={3}
             labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             inputClassName="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />

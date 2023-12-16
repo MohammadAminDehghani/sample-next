@@ -11,10 +11,9 @@ import InnerEditCategoryForm from "@/app/tools/components/admin/categories/inner
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const FormValidationSchema = yup.object({
-    title: yup.string().min(4).max(255).required('Title is required'),
-    body: yup.string().min(0),
-    category: yup.number().integer(),
-    description: yup.string().min(4).max(6000),
+    name: yup.string().min(2).max(255).required('Title is required'),
+    parent: yup.string(),
+    description: yup.string().min(0),
 });
 
 interface FormProps {
@@ -26,21 +25,20 @@ const EditCategoryForm = withFormik<FormProps, EditCategoryInterface>({
     mapPropsToValues: ({category}) => ({
         id: category.id ?? '',
         user: category.user ?? '',
-        title: category.title ?? '',
-        slug: category.slug ?? '',
-        body: category.body ?? '',
-        image: category.image ?? {},
-        tags: category.tags ?? '',
-        viewCount: category.viewCount ?? 0,
-        commentCount: category.commentCount ?? 0,
-        categories: category.categories ?? [],
-        path: category.path ?? ''
+        name: category.name ?? '',
+        description: category.description ?? '',
+        parent: category.parent ?? '',
+
     }),
-    validationSchema: FormValidationSchema,
+    //validationSchema: FormValidationSchema,
     handleSubmit: async (values, { props, setFieldError }) => {
-
+        console.log('values ghable', values);
+        values.parent === 'parent' ? values.parent = undefined : values.parent;
+        console.log('test', 'qqqqqqqqqqqqq');
+        console.log('values', values);
+        console.log('props', props);
         try {
-
+            
             const res = await UpdateCategory(values)
             toast.success("the category updated successfully");
             props.router.push('/admin/categories')

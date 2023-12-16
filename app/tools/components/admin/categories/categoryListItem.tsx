@@ -8,13 +8,14 @@ import { KeyedMutator } from "swr";
 
 interface Props {
   category: Category;
+  index: number;
   categoriesMutate: KeyedMutator<{
     categories: any;
     total_page?: any;
   }>;
 }
 
-export default function CategoryListItem({ category, categoriesMutate }: Props) {
+export default function CategoryListItem({ category, index, categoriesMutate }: Props) {
   const [showDeleteConfirmation, setShowDeleteConfirmation] =
     useState<boolean>(false);
 
@@ -44,7 +45,7 @@ export default function CategoryListItem({ category, categoriesMutate }: Props) 
         {showDeleteConfirmation && (
           <td className="hidden">
             <DeleteConfirmation
-              title={`delete ${category.title}`}
+              title={`delete ${category.name}`}
               description="Are you sure you want to delete?"
               handleCancel={() => setShowDeleteConfirmation(false)}
               handleTrue={() => handleDeleteConfirmation(category)}
@@ -52,14 +53,17 @@ export default function CategoryListItem({ category, categoriesMutate }: Props) 
           </td>
         )}
         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+          {index}
+        </td>
+        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
           {category.id}
         </td>
         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-          {category.title}
+          {category.name}
         </td>
-        {/* <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-          {category.body}
-        </td> */}
+        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+          {category?.parentCategory?.name ?? '------'}
+        </td>
         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
           <a
             href={`/admin/categories/${category.id}/edit`}

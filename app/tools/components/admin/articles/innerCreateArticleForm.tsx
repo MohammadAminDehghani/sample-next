@@ -2,9 +2,28 @@ import { Form, FormikProps } from "formik";
 import Input from "@/app/tools/components/shared/form/input";
 import { StoreArticleInterface } from "@/app/tools/contracts/admin/articles";
 import TextArea from "@/app/tools/components/shared/form/textarea";
+import SelectBox from "../../shared/form/selectbox";
+import useSWR from "swr";
+import { GetCategories } from "@/app/tools/services/db/category";
 
 const InnerCreateArticleForm = (props: FormikProps<StoreArticleInterface>) => {
+  
+  //console.log('inja', props.categories)
 
+  const { data , error, mutate } = useSWR(
+    {},
+    GetCategories
+  );
+
+  const options : any = [];
+
+  data?.categories.map((category : any) =>{
+    options.push({
+      label : category.title,
+      value : category.id
+    })
+  })
+  
   return (
     <Form>
       <div className="p-6 grid grid-cols-1 gap-y-6 sm:grid-cols-4 sm:gap-x-8">
@@ -16,7 +35,6 @@ const InnerCreateArticleForm = (props: FormikProps<StoreArticleInterface>) => {
             inputClassName="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
-
         <div className="sm:col-span-2">
           <Input
             name="slug"
@@ -25,6 +43,17 @@ const InnerCreateArticleForm = (props: FormikProps<StoreArticleInterface>) => {
             inputClassName="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
+        {
+          data?.categories !== undefined ?
+
+            <SelectBox
+            name="categories"
+              label="categories"
+              options={options}
+            />
+            : 'loading...'
+          
+        }
 
         <div className="sm:col-span-4">
           <TextArea

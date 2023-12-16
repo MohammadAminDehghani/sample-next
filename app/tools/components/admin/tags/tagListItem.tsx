@@ -44,7 +44,7 @@ export default function TagListItem({ tag, tagsMutate }: Props) {
         {showDeleteConfirmation && (
           <td className="hidden">
             <DeleteConfirmation
-              title={`delete ${tag.title}`}
+              title={`delete ${tag.name}`}
               description="Are you sure you want to delete?"
               handleCancel={() => setShowDeleteConfirmation(false)}
               handleTrue={() => handleDeleteConfirmation(tag)}
@@ -55,11 +55,8 @@ export default function TagListItem({ tag, tagsMutate }: Props) {
           {tag.id}
         </td>
         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-          {tag.title}
+          {tag.name}
         </td>
-        {/* <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-          {tag.body}
-        </td> */}
         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
           <a
             href={`/admin/tags/${tag.id}/edit`}

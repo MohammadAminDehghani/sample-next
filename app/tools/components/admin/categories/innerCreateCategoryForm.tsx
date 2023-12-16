@@ -2,15 +2,35 @@ import { Form, FormikProps } from "formik";
 import Input from "@/app/tools/components/shared/form/input";
 import { StoreCategoryInterface } from "@/app/tools/contracts/admin/categories";
 import TextArea from "@/app/tools/components/shared/form/textarea";
+import SelectBox from "../../shared/form/selectbox";
+import { GetCategories } from "@/app/tools/services/db/category";
+import useSWR from "swr";
 
-const InnerCreateCategoryForm = (props: FormikProps<StoreCategoryInterface>) => {
+const InnerCreateCategoryForm = (
+  props: FormikProps<StoreCategoryInterface>
+) => {
+  const { data, error, mutate } = useSWR({}, GetCategories);
+
+  const options: any = [
+    {
+      label: "It's parent category",
+      value: "",
+    },
+  ];
+
+  data?.categories.map((category: any) => {
+    options.push({
+      label: category.name,
+      value: category.id,
+    });
+  });
 
   return (
     <Form>
       <div className="p-6 grid grid-cols-1 gap-y-6 sm:grid-cols-4 sm:gap-x-8">
         <div className="sm:col-span-2">
           <Input
-            name="title"
+            name="name"
             label="category name"
             labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             inputClassName="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -18,17 +38,17 @@ const InnerCreateCategoryForm = (props: FormikProps<StoreCategoryInterface>) => 
         </div>
 
         <div className="sm:col-span-2">
-          <Input
-            name="slug"
-            label="category's slug"
+          <SelectBox
+            name="parent"
+            options={options}
+            label="choose parent"
             labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            inputClassName="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
 
         <div className="sm:col-span-4">
           <TextArea
-            name="body"
+            name="description"
             label="about category"
             rows={7}
             labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"

@@ -4,7 +4,8 @@ import {
   EditCategoryInterface,
 } from "@/app/tools/contracts/admin/categories";
 
-export async function GetCategories({ page = 1, per_page = 10 }) {
+export async function GetCategories() {
+  console.log("Getting categories")
   //let res = await callApi().get(`/admin/categories?page=${page}&per_page=${per_page}`);
   let res = await callApi().get('/admin/categories');
   //return { categories: res?.data?.data, total_page: res?.data?.total_page };
