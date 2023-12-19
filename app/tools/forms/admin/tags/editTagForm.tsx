@@ -9,32 +9,33 @@ import { toast } from 'react-toastify';
 import Tag from "@/app/tools/models/tag";
 import InnerEditTagForm from "@/app/tools/components/admin/tags/innerEditTagForm";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { Dispatch } from "react";
+import { SetStateAction } from "react";
+import { KeyedMutator } from "swr";
 
 const FormValidationSchema = yup.object({
-    title: yup.string().min(4).max(255).required('Title is required'),
-    body: yup.string().min(0),
-    category: yup.number().integer(),
-    description: yup.string().min(4).max(6000),
+    name: yup.string().min(2).max(255).required('name is required'),
+    description: yup.string().min(0).max(6000),
 });
 
 interface FormProps {
-    tag : Tag,
+    id: string,
+    tag : Tag | undefined,
+    setEditableTag : Dispatch<SetStateAction<Tag|undefined>> ,
+    setShowCreateTag : Dispatch<SetStateAction<boolean>> ,
+    tagsMutate: KeyedMutator<{
+        tags: any;
+        total_page?: any;
+      }>;
     router: AppRouterInstance
 }
 
 const EditTagForm = withFormik<FormProps, EditTagInterface>({
-    mapPropsToValues: ({tag}) => ({
-        id: tag.id ?? '',
-        user: tag.user ?? '',
-        title: tag.title ?? '',
-        slug: tag.slug ?? '',
-        body: tag.body ?? '',
-        image: tag.image ?? {},
-        tags: tag.tags ?? '',
-        viewCount: tag.viewCount ?? 0,
-        commentCount: tag.commentCount ?? 0,
-        categories: tag.categories ?? [],
-        path: tag.path ?? ''
+    mapPropsToValues: (props) => ({
+        id: props?.tag?.id ?? '',
+        name: props?.tag?.name ?? '',
+        description: props?.tag?.description ?? '',
+        setShowCreateTag : props.setShowCreateTag
     }),
     validationSchema: FormValidationSchema,
     handleSubmit: async (values, { props, setFieldError }) => {
@@ -43,8 +44,9 @@ const EditTagForm = withFormik<FormProps, EditTagInterface>({
 
             const res = await UpdateTag(values)
             toast.success("the tag updated successfully");
-            props.router.push('/admin/tags')
-
+            //props.setShowCreateTag(true);
+            props.tagsMutate();
+            props.setShowCreateTag(true)
 
             // if (res.status === 200) {
             //     Router.push('/admin/tags')

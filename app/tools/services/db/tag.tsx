@@ -15,7 +15,7 @@ export async function StoreTag(values: StoreTagInterface) {
   console.log('values',values)
   return await callApi().post("/admin/tags", {
     ...values,
-    body: values.body,
+    //body: values.body,
   });
 }
 
@@ -30,7 +30,7 @@ export async function EditTag(tagId: string | string) {
 export async function UpdateTag(values: EditTagInterface) {
   return await callApi().post(`/admin/tags/${values.id}/update`, {
     ...values,
-    body: values.body,
+    //description: values.description,
   });
 }
 

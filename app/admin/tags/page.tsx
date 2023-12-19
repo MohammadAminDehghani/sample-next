@@ -12,6 +12,8 @@ import TagListItem from "@/app/tools/components/admin/tags/tagListItem";
 import { useSelector } from "react-redux";
 import { selectUser } from "@/app/tools/store/auth";
 import { GetTags } from "@/app/tools/services/db/tag";
+import { useState } from "react";
+import EditTagForm from "@/app/tools/forms/admin/tags/editTagForm";
 
 interface Props {
   searchParams: {
@@ -24,7 +26,11 @@ const AdminTags = ({ searchParams: { page, per_page } }: Props) => {
   const user = useSelector(selectUser);
   const router = useRouter();
 
+  const [showCreateTag, setShowCreateTag] = useState(true);
+  const [editableTag, setEditableTag] = useState<Tag | undefined>(undefined);
+
   //page === undefined ? router.push('/admin/tags?page=1') : ''
+  console.log("editableTag", editableTag);
 
   const { data, error, mutate } = useSWR(
     {
@@ -42,44 +48,42 @@ const AdminTags = ({ searchParams: { page, per_page } }: Props) => {
     router.push(`/admin/tags?page=${selected + 1}`);
   };
 
-  const setShowCreateTag = (show = true) => {
-    router.push(`/admin/tags${show === true ? "?create-tag" : ""}`);
-  };
+  // const setShowCreateTag = (show = true) => {
+  //   router.push(`/admin/tags${show === true ? "?create-tag" : ""}`);
+  // };
 
   return (
     <>
       {user.canAccess("add_new_tag") && (
         <Modal setShow={() => setShowCreateTag(false)}>
           <div className="p-4 inline-block w-full max-w-4xl mt-20 mb-20 ml-20 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg opacity-100 scale-100">
-            <CreateTagForm router={router} />
+            <CreateTagForm
+              router={router}
+              tagsMutate={mutate}
+              setShowCreateTag={setShowCreateTag}
+            />
           </div>
         </Modal>
       )}
 
       <div className="px-4 sm:px-6 lg:px-8">
-        <div className="sm:flex sm:items-center">
-          <div className="sm:flex-auto">
-            <h1 className="text-xl font-semibold text-gray-900">
-              Tags List
-            </h1>
-          </div>
-          <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-            {!user.canAccess("add_new_tag") && (
-              <button
-                // onClick={() => setShowAddTag(true)}
-                onClick={() => {
-                  //setShowCreateTag(true);
-                  //router.push('/admin/products?create-product')
-                  router.push("/admin/tags/create");
-                }}
-                type="submit"
-                className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
-              >
-                add tag
-              </button>
-            )}
-          </div>
-        </div>
+        {showCreateTag ? (
+          <CreateTagForm
+            router={router}
+            tagsMutate={mutate}
+            setShowCreateTag={setShowCreateTag}
+          />
+        ) : (
+          <EditTagForm
+            id="editTagForm"
+            router={router}
+            tag={editableTag}
+            tagsMutate={mutate}
+            setEditableTag={setEditableTag}
+            setShowCreateTag={setShowCreateTag}
+          />
+        )}
+
         <div className="mt-8 flex flex-col">
           <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
@@ -89,43 +93,60 @@ const AdminTags = ({ searchParams: { page, per_page } }: Props) => {
                     <LoadingBox />
                   </div>
                 ) : data?.tags?.length > 0 ? (
-                  <table className="min-w-full divide-y divide-gray-300">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th
-                          scope="col"
-                          className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-                        >
-                          Tag Number
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                        >
-                          Title
-                        </th>
-                        {/* <th
-                          scope="col"
-                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                        >
-                          Description
-                        </th> */}
-                        <th
-                          scope="col"
-                          className="relative py-3.5 pl-3 pr-4 sm:pr-6"
-                        ></th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200 bg-white">
-                      {data?.tags.map((tag: Tag) => (
+                  <div className="p-5">
+                    {data?.tags.map(
+                      (tag: Tag) => (
                         <TagListItem
                           key={tag.id}
                           tag={tag}
                           tagsMutate={mutate}
+                          //editableTag={editableTag}
+                          setEditableTag={setEditableTag}
+                          setShowCreateTag={setShowCreateTag}
                         />
-                      ))}
-                    </tbody>
-                  </table>
+                      )
+                      // <table className="min-w-full divide-y divide-gray-300">
+                      //   <thead className="bg-gray-50">
+                      //     <tr>
+                      //       <th
+                      //         scope="col"
+                      //         className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                      //       >
+                      //         Tag Number
+                      //       </th>
+                      //       <th
+                      //         scope="col"
+                      //         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      //       >
+                      //         Title
+                      //       </th>
+                      //       <th
+                      //         scope="col"
+                      //         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      //       >
+                      //         Description
+                      //       </th>
+                      //       <th
+                      //         scope="col"
+                      //         className="relative py-3.5 pl-3 pr-4 sm:pr-6"
+                      //       ></th>
+                      //     </tr>
+                      //   </thead>
+                      //   <tbody className="divide-y divide-gray-200 bg-white">
+                      //     {data?.tags.map((tag: Tag) => (
+                      //       <TagListItem
+                      //         key={tag.id}
+                      //         tag={tag}
+                      //         tagsMutate={mutate}
+                      //         //editableTag={editableTag}
+                      //         setEditableTag={setEditableTag}
+                      //         setShowCreateTag={setShowCreateTag}
+                      //       />
+                      //     ))}
+                      //   </tbody>
+                      // </table>
+                    )}
+                  </div>
                 ) : (
                   <EmptyList
                     title="Nothing to show!"

@@ -1,48 +1,26 @@
 import { Form, FormikProps } from "formik";
 import Input from "@/app/tools/components/shared/form/input";
-import { EditTagInterface } from "@/app/tools/contracts/admin/tags";
 import TextArea from "@/app/tools/components/shared/form/textarea";
 
-const InnerEditTagForm = (props: FormikProps<EditTagInterface>) => {
+const InnerEditTagForm = (props: FormikProps<any>) => {
+  //console.log('propsInInnerTagForm', props)
   return (
     <Form>
       <div className="p-6 grid grid-cols-1 gap-y-6 sm:grid-cols-4 sm:gap-x-8">
         <div className="sm:col-span-2">
           <Input
-            name="title"
+            name="name"
             label="tag name"
             labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             inputClassName="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
 
-        <div className="sm:col-span-2">
-          <Input
-            name="slug"
-            label="tag's slug"
-            labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            inputClassName="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
-
-        {/* <div className="sm:col-span-4">
-          <SelectBox 
-            name="category"
-            label="cars-tag"
-            SelectClassName="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            options={[
-              {label: 'car', value:'1'},
-              {label: 'laptop', value:'2'},
-              {label: 'phone', value:'3'},
-            ]}
-          />
-        </div> */}
-
         <div className="sm:col-span-4">
           <TextArea
-            name="body"
-            label="rticle body"
-            rows={7}
+            name="description"
+            label="tag description"
+            rows={1}
             labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             inputClassName="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
@@ -58,6 +36,7 @@ const InnerEditTagForm = (props: FormikProps<EditTagInterface>) => {
         </button>
         <button
           type="button"
+          onClick={()=>{ props.values.setShowCreateTag(true) } }
           className="inline-flex items-center mx-1 px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
           Cancel
