@@ -1,3 +1,5 @@
+"use client";
+
 import { Form, FormikProps } from "formik";
 import Input from "@/app/tools/components/shared/form/input";
 import { StoreArticleInterface } from "@/app/tools/contracts/admin/articles";
@@ -5,25 +7,69 @@ import TextArea from "@/app/tools/components/shared/form/textarea";
 import SelectBox from "../../shared/form/selectbox";
 import useSWR from "swr";
 import { GetCategories } from "@/app/tools/services/db/category";
+import { GetTags } from "@/app/tools/services/db/tag";
+import Category from "@/app/tools/models/category";
+import Tag from "@/app/tools/models/tag";
+import { useState } from "react";
 
 const InnerCreateArticleForm = (props: FormikProps<StoreArticleInterface>) => {
-  
-  //console.log('inja', props.categories)
 
-  const { data , error, mutate } = useSWR(
-    {},
-    GetCategories
-  );
+  const {
+    data: categoriesData,
+    error: categoryError,
+    mutate: categoryMutate,
+  } = useSWR("/api/admin/categories", GetCategories);
 
-  const options : any = [];
+  const categoryOptions: any = [];
 
-  data?.categories.map((category : any) =>{
-    options.push({
-      label : category.title,
-      value : category.id
-    })
-  })
-  
+  categoriesData?.categories.map((category: Category) => {
+    categoryOptions.push({
+      label: category.name,
+      value: category.id,
+    });
+  });
+
+  const {
+    data: tagsData,
+    error: tagError,
+    mutate: tagMutate,
+  } = useSWR("/api/admin/tags", GetTags);
+
+  const tagOptions: any = [];
+
+  tagsData?.tags?.map((category: Tag) => {
+    tagOptions.push({
+      label: category.name,
+      value: category.id,
+    });
+  });
+
+  const [showingTags, setShowingTags] = useState<
+    { label: string; value: string }[]
+  >([]);
+
+  const onchangeHandlerForTags = (
+    event: React.ChangeEvent<Element> | null
+  ) => {
+    let selectElement = event?.currentTarget as HTMLSelectElement;
+    let label = selectElement.options[selectElement.selectedIndex].text;
+
+    setShowingTags([
+      ...showingTags,
+      {
+        label: label,
+        value: selectElement.value,
+      },
+    ]);
+
+  };
+  const deleteHanderForShowingTags = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    const filtered = showingTags.filter(tag =>  tag.value !== event.currentTarget.value);
+    setShowingTags(filtered);
+  };
+
   return (
     <Form>
       <div className="p-6 grid grid-cols-1 gap-y-6 sm:grid-cols-4 sm:gap-x-8">
@@ -43,17 +89,58 @@ const InnerCreateArticleForm = (props: FormikProps<StoreArticleInterface>) => {
             inputClassName="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
-        {
-          data?.categories !== undefined ?
-
-            <SelectBox
+        {(categoriesData?.categories !== undefined) && categoryOptions.length !== 0 ? (
+          <SelectBox
             name="categories"
-              label="categories"
-              options={options}
-            />
-            : 'loading...'
-          
-        }
+            label="categories"
+            options={categoryOptions}
+            defaultValue={''}
+
+          />
+        ) : (
+          " loading categories... "
+        )}
+
+        {(tagsData?.tags !== undefined) && tagOptions.length !== 0 ? (
+          <SelectBox
+            name="tags"
+            label="tags"
+            options={tagOptions}
+            defaultValue={''}
+            onChange={onchangeHandlerForTags}
+          />
+        ) : (
+          " loading tags... "
+        )}
+
+        
+          {showingTags.map((tag) => {
+            return(
+              <div key={tag.value} className="text-xs inline-flex items-center font-bold leading-sm uppercase px-2 py-1 rounded-full bg-white text-gray-700 border">
+              {tag.label}
+              <button value={tag.value} onClick={deleteHanderForShowingTags}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-4 h-4 ml-5"
+                  color="#dc2626"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                  />
+                </svg>
+              </button>
+            </div>
+            );
+          })}
+        
+
+
 
         <div className="sm:col-span-4">
           <TextArea

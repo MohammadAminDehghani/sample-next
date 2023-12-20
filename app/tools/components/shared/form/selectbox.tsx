@@ -43,8 +43,11 @@ const SelectBox: FC<SelectBoxProps> = ({
       </label>
       <Field name={name} id={id} className={SelectClassName}>
         {({ field, meta }: FieldProps) => {
-          const selectedValue = field.value || defaultValue || "";
-          console.log("selectedValue", selectedValue);
+          let selectedValue = field.value || defaultValue || "";
+          
+          // solve Warning: The `value` prop supplied to <select> must be a scalar value if `multiple` is false.
+          selectedValue.length === 0 ? selectedValue = '' : ''
+
           return (
             <select
               {...field}

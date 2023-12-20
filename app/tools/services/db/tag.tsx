@@ -4,7 +4,8 @@ import {
   EditTagInterface,
 } from "@/app/tools/contracts/admin/tags";
 
-export async function GetTags({ page = 1, per_page = 10 }) {
+//export async function GetTags({ page = 1, per_page = 10 }) {
+export async function GetTags() {
   //let res = await callApi().get(`/admin/tags?page=${page}&per_page=${per_page}`);
   let res = await callApi().get('/admin/tags');
   //return { tags: res?.data?.data, total_page: res?.data?.total_page };

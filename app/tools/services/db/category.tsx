@@ -5,7 +5,6 @@ import {
 } from "@/app/tools/contracts/admin/categories";
 
 export async function GetCategories() {
-  console.log("Getting categories")
   //let res = await callApi().get(`/admin/categories?page=${page}&per_page=${per_page}`);
   let res = await callApi().get('/admin/categories');
   //return { categories: res?.data?.data, total_page: res?.data?.total_page };
@@ -13,10 +12,10 @@ export async function GetCategories() {
 }
 
 export async function StoreCategory(values: StoreCategoryInterface) {
-  console.log('values',values)
+  //console.log('values',values)
   return await callApi().post("/admin/categories", {
     ...values,
-    body: values.body,
+    //body: values.body,
   });
 }
 
@@ -31,7 +30,7 @@ export async function EditCategory(categoryId: string | string) {
 export async function UpdateCategory(values: EditCategoryInterface) {
   return await callApi().post(`/admin/categories/${values.id}/update`, {
     ...values,
-    body: values.body,
+    //body: values.body,
   });
 }
 

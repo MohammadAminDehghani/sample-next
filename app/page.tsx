@@ -3,7 +3,7 @@
 import { Button } from "primereact/button";
 import { MultiSelect } from "primereact/multiselect";
 import React, { useState } from "react";
-import 'primereact/resources/themes/bootstrap4-dark-blue/theme.css';
+//import 'primereact/resources/themes/bootstrap4-dark-blue/theme.css';
 
 const Home = () => {
   const [selectedCities, setSelectedCities] = useState(null);
