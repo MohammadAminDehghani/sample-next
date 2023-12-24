@@ -38,3 +38,11 @@ export async function UpdateTag(values: EditTagInterface) {
 export async function DeleteTag(tagId: string) {
   return await callApi().delete(`/admin/tags/${tagId}/delete`, {});
 }
+
+export async function SearchTags(query: string) {
+  console.log('query',query)
+    //let res = await callApi().get(`/admin/tags?page=${page}&per_page=${per_page}`);
+    let res = await callApi().get(`/admin/tags/${query}/search`, {});
+    //return { tags: res?.data?.data, total_page: res?.data?.total_page };
+    return { tags: res?.data };
+}

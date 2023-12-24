@@ -8,46 +8,36 @@ import { StoreArticle } from "@/app/tools/services/db/article";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const FormValidationSchema = yup.object({
-    title: yup.string().min(4).max(255).required('Name is required'),
-    price: yup.string().min(0),
-    category: yup.number().integer(),
-    description: yup.string().min(4).max(6000),
+    title: yup.string().min(4).max(255).required('title is required'),
+    slug: yup.string().min(3).required('slug is required'),
+    body: yup.string().min(0).max(6000),
 });
 
-interface LoginFormProps {
-    id?: string,
-    user?: string,
+interface FormProps {
+    // id?: string,
     title?: string,
     slug?: string,
     body?: string,
-    image?: object,
-    tags?: string | null,
-    viewCount?: number,
-    commentCount?: number,
-    categories?: string[],
-    path?: string,
+    tags?: string[] | null,
+    category?: string | null,
     router: AppRouterInstance
 }
 //const router = useRouter
 
 
-const CreateArticleForm = withFormik<LoginFormProps, StoreArticleInterface>({
+const CreateArticleForm = withFormik<FormProps, StoreArticleInterface>({
     mapPropsToValues: (props) => ({
-        id: props.id ?? '',
-        user: props.user ?? '',
+        // id: props.id ?? '',
         title: props.title ?? '',
         slug: props.slug ?? '',
         body: props.body ?? '',
-        image: props.image ?? {},
-        tags: props.tags ?? '',
-        viewCount: props.viewCount ?? 0,
-        commentCount: props.commentCount ?? 0,
-        categories: props.categories ?? [],
-        path: props.path ?? ''
+        tags: props.tags ?? [],
+        category: props.category ?? '',
     }),
     validationSchema: FormValidationSchema,
     handleSubmit: async (values, { props, setFieldError }) => {
-        
+        console.log('values', values)
+        console.log('props', props)
         try {
             const res = await StoreArticle(values);
             if (res.status === 200) {

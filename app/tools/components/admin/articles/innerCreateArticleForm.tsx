@@ -7,13 +7,12 @@ import TextArea from "@/app/tools/components/shared/form/textarea";
 import SelectBox from "../../shared/form/selectbox";
 import useSWR from "swr";
 import { GetCategories } from "@/app/tools/services/db/category";
-import { GetTags } from "@/app/tools/services/db/tag";
+import { SearchTags } from "@/app/tools/services/db/tag";
 import Category from "@/app/tools/models/category";
 import Tag from "@/app/tools/models/tag";
 import { useState } from "react";
 
 const InnerCreateArticleForm = (props: FormikProps<StoreArticleInterface>) => {
-
   const {
     data: categoriesData,
     error: categoryError,
@@ -29,28 +28,27 @@ const InnerCreateArticleForm = (props: FormikProps<StoreArticleInterface>) => {
     });
   });
 
+  const [inputValue, setInputValue] = useState("");
   const {
     data: tagsData,
     error: tagError,
     mutate: tagMutate,
-  } = useSWR("/api/admin/tags", GetTags);
+  } = useSWR(inputValue, SearchTags, {
+    revalidateOnMount: true,
+    revalidateOnFocus: false,
+  });
 
-  const tagOptions: any = [];
-
-  tagsData?.tags?.map((category: Tag) => {
-    tagOptions.push({
+  const tagOptions =
+    tagsData?.tags?.map((category: Tag) => ({
       label: category.name,
       value: category.id,
-    });
-  });
+    })) || [];
 
   const [showingTags, setShowingTags] = useState<
     { label: string; value: string }[]
   >([]);
 
-  const onchangeHandlerForTags = (
-    event: React.ChangeEvent<Element> | null
-  ) => {
+  const onchangeHandlerForTags = (event: React.ChangeEvent<Element> | null) => {
     let selectElement = event?.currentTarget as HTMLSelectElement;
     let label = selectElement.options[selectElement.selectedIndex].text;
 
@@ -62,12 +60,22 @@ const InnerCreateArticleForm = (props: FormikProps<StoreArticleInterface>) => {
       },
     ]);
 
+    props.values.tags = showingTags.map((tag) => tag.value);
+    props.values.tags.push(selectElement.value);
   };
+
   const deleteHanderForShowingTags = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    const filtered = showingTags.filter(tag =>  tag.value !== event.currentTarget.value);
+    const filtered = showingTags.filter(
+      (tag) => tag.value !== event.currentTarget.value
+    );
     setShowingTags(filtered);
+  };
+
+  const tagInputChangeHandler = (value: string) => {
+    setInputValue(value);
+    tagMutate();
   };
 
   return (
@@ -89,34 +97,51 @@ const InnerCreateArticleForm = (props: FormikProps<StoreArticleInterface>) => {
             inputClassName="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
-        {(categoriesData?.categories !== undefined) && categoryOptions.length !== 0 ? (
-          <SelectBox
-            name="categories"
-            label="categories"
-            options={categoryOptions}
-            defaultValue={''}
-
-          />
+        {categoriesData?.categories !== undefined &&
+        categoryOptions.length !== 0 ? (
+          <div className="sm:col-span-4">
+            <SelectBox
+              name="category"
+              label="category"
+              options={categoryOptions}
+              defaultValue={""}
+            />
+          </div>
         ) : (
           " loading categories... "
         )}
 
-        {(tagsData?.tags !== undefined) && tagOptions.length !== 0 ? (
-          <SelectBox
-            name="tags"
-            label="tags"
-            options={tagOptions}
-            defaultValue={''}
-            onChange={onchangeHandlerForTags}
+        <div className="sm:col-span-2">
+          <Input
+            name="searchTag"
+            //value={inputValue}
+            inputOnChange={tagInputChangeHandler}
+            label="tag's search"
+            labelClassName="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            inputClassName="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
+        </div>
+
+        {tagsData?.tags !== undefined && tagOptions.length !== 0 ? (
+          <div className="sm:col-span-2">
+            <SelectBox
+              name="tags"
+              label="tags"
+              options={tagOptions}
+              defaultValue={""}
+              onChange={onchangeHandlerForTags}
+            />
+          </div>
         ) : (
           " loading tags... "
         )}
 
-        
-          {showingTags.map((tag) => {
-            return(
-              <div key={tag.value} className="text-xs inline-flex items-center font-bold leading-sm uppercase px-2 py-1 rounded-full bg-white text-gray-700 border">
+        {showingTags.map((tag) => {
+          return (
+            <div
+              key={tag.value}
+              className="text-xs inline-flex items-center font-bold leading-sm uppercase px-2 py-1 rounded-full bg-white text-gray-700 border"
+            >
               {tag.label}
               <button value={tag.value} onClick={deleteHanderForShowingTags}>
                 <svg
@@ -136,11 +161,8 @@ const InnerCreateArticleForm = (props: FormikProps<StoreArticleInterface>) => {
                 </svg>
               </button>
             </div>
-            );
-          })}
-        
-
-
+          );
+        })}
 
         <div className="sm:col-span-4">
           <TextArea
