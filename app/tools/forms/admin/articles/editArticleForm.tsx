@@ -11,9 +11,9 @@ import InnerEditArticleForm from "@/app/tools/components/admin/articles/innerEdi
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const FormValidationSchema = yup.object({
-    title: yup.string().min(4).max(255).required('Title is required'),
+    title: yup.string().min(4).max(255).required('title is required'),
     body: yup.string().min(0),
-    category: yup.number().integer(),
+    category: yup.string(),
     description: yup.string().min(4).max(6000),
 });
 
@@ -25,22 +25,19 @@ interface FormProps {
 const EditArticleForm = withFormik<FormProps, EditArticleInterface>({
     mapPropsToValues: ({article}) => ({
         id: article.id ?? '',
-        user: article.user ?? '',
         title: article.title ?? '',
         slug: article.slug ?? '',
         body: article.body ?? '',
-        image: article.image ?? {},
-        tags: article.tags ?? '',
-        viewCount: article.viewCount ?? 0,
-        commentCount: article.commentCount ?? 0,
-        categories: article.categories ?? [],
-        path: article.path ?? ''
+        tags: article.tags ?? [],
+        category: article.category ?? '',
     }),
     validationSchema: FormValidationSchema,
     handleSubmit: async (values, { props, setFieldError }) => {
 
-        try {
+        
 
+        try {
+            values.tags = values.tags.map(tag=>tag.id);
             const res = await UpdateArticle(values)
             toast.success("the article updated successfully");
             props.router.push('/admin/articles')

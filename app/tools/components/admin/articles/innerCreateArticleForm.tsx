@@ -39,9 +39,9 @@ const InnerCreateArticleForm = (props: FormikProps<StoreArticleInterface>) => {
   });
 
   const tagOptions =
-    tagsData?.tags?.map((category: Tag) => ({
-      label: category.name,
-      value: category.id,
+    tagsData?.tags?.map((tag: Tag) => ({
+      label: tag.name,
+      value: tag.id,
     })) || [];
 
   const [showingTags, setShowingTags] = useState<

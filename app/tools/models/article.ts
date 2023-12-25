@@ -8,9 +8,9 @@ export default interface Article {
     slug: string;
     body: string;
     image: object;
-    tags: string | null;
+    tags: string[] | null;
     viewCount: number;
     commentCount: number;
-    categories: string[];
+    category: string | null | undefined;
     path?: string;
 }

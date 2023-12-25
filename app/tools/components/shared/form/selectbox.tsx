@@ -10,7 +10,7 @@ interface SelectBoxProps {
   label?: string;
   id?: string;
   name: string;
-  defaultValue?: string | undefined;
+  defaultValue?: string | null | undefined;
   options: SelectBoxOptionsInterface[];
   labelClassName?: string;
   SelectClassName?: string;
@@ -43,10 +43,18 @@ const SelectBox: FC<SelectBoxProps> = ({
       </label>
       <Field name={name} id={id} className={SelectClassName}>
         {({ field, meta }: FieldProps) => {
+
           let selectedValue = field.value || defaultValue || "";
           
-          // solve Warning: The `value` prop supplied to <select> must be a scalar value if `multiple` is false.
+          //solve Warning: The `value` prop supplied to <select> must be a scalar value if `multiple` is false.
           selectedValue.length === 0 ? selectedValue = '' : ''
+
+          // Handle the case when selectedValue is an array
+          if (Array.isArray(selectedValue)) {
+            selectedValue = selectedValue.length > 0 ? selectedValue[0] : '';
+          }
+
+          console.log('selectedValue',selectedValue)
 
           return (
             <select
@@ -59,7 +67,7 @@ const SelectBox: FC<SelectBoxProps> = ({
               onChange={onChange || field.onChange}
             >
               {options.map((option: SelectBoxOptionsInterface, index) => (
-                <option key={index} value={option.value}>
+                <option key={option.value} value={option.value}>
                   {option.label}
                 </option>
               ))}

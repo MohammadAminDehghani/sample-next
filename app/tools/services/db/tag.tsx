@@ -40,7 +40,6 @@ export async function DeleteTag(tagId: string) {
 }
 
 export async function SearchTags(query: string) {
-  console.log('query',query)
     //let res = await callApi().get(`/admin/tags?page=${page}&per_page=${per_page}`);
     let res = await callApi().get(`/admin/tags/${query}/search`, {});
     //return { tags: res?.data?.data, total_page: res?.data?.total_page };
