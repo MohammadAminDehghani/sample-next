@@ -99,7 +99,7 @@ const InnerEditArticleForm = (props: FormikProps<EditArticleInterface>) => {
       newShowingTags,
       keyMappingsFrontToDb
     );
-    console.log("props.values.tags", props.values.tags);
+
   };
 
   const deleteHanderForShowingTags = (

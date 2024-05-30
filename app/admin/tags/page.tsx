@@ -30,7 +30,7 @@ const AdminTags = ({ searchParams: { page, per_page } }: Props) => {
   const [editableTag, setEditableTag] = useState<Tag | undefined>(undefined);
 
   //page === undefined ? router.push('/admin/tags?page=1') : ''
-  console.log("editableTag", editableTag);
+  //console.log("editableTag", editableTag);
 
   const { data, error, mutate } = useSWR(
     {

@@ -3,7 +3,7 @@ export interface StoreArticleInterface {
     title: string;
     slug: string;
     body: string;
-    tags: { [key: string]: string; }[];
+    tags: any[] | { [key: string]: string; }[];
     category: string | null;
 }
 

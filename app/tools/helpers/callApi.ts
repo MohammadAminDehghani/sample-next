@@ -16,6 +16,7 @@ const callApi = () => {
     )
 
     axiosInstance.interceptors.response.use(
+        
         (res) => {
             // manage validation
             // reform data
@@ -25,7 +26,7 @@ const callApi = () => {
         err => {
             const res = err?.response
             if (res) {
-                if (res.status === 422) {
+                if (res.status === 422 || res.status === 401) {
                     throw new validationErrors(res.data.errors)
                 }
             }

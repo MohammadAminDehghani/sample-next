@@ -6,9 +6,17 @@ import {
 
 export async function GetArticles({ page = 1, per_page = 10 }) {
   //let res = await callApi().get(`/admin/articles?page=${page}&per_page=${per_page}`);
-  let res = await callApi().get('/admin/articles');
+  let res = await callApi().get('/admin/articles').then((res) => {
+    console.log(50);
+    console.log(res?.data);
+    return { articles: res?.data };
+  })
+  .catch((error) => {
+    console.log(60);
+    console.error(error);
+  });;
   //return { articles: res?.data?.data, total_page: res?.data?.total_page };
-  return { articles: res?.data };
+  
 }
 
 export async function StoreArticle(values: StoreArticleInterface) {

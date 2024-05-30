@@ -54,8 +54,6 @@ const SelectBox: FC<SelectBoxProps> = ({
             selectedValue = selectedValue.length > 0 ? selectedValue[0] : '';
           }
 
-          console.log('selectedValue',selectedValue)
-
           return (
             <select
               {...field}

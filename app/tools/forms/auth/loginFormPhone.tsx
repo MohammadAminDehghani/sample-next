@@ -51,6 +51,11 @@ const LoginFormPhone = withFormik<LoginFormProps, LoginFormValuesInterfacePhone>
                 props.setToken(res.data.token);
             }
 
+            // if (res.status === 400) {
+            //     console.log('error 400');
+            //     props.router.push('/auth/login');
+            // }
+
         } catch (error) {
             if (error instanceof validationErrors) {
                 Object.entries(error.messages).forEach(
