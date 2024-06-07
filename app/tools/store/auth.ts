@@ -6,6 +6,7 @@ import { createSelector } from 'reselect';
 
 interface AuthState {
   loadingUser?: boolean;
+  verifyToken?: string;
   phoneVerifyToken?: string;
   user?: UserType;
 }
@@ -23,6 +24,9 @@ export const authSlice = createSlice({
     updatePhoneVerifyToken: (state, action: PayloadAction<string | undefined>) => {
       state.phoneVerifyToken = action.payload;
     },
+    updateVerifyToken: (state, action: PayloadAction<string | undefined>) => {
+      state.verifyToken = action.payload;
+    },
     updateUser: (state, action: PayloadAction<UserType>) => {
       state.user = action.payload;
     },
@@ -32,7 +36,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const { updatePhoneVerifyToken, updateUser, updateLoadingUser } = authSlice.actions;
+export const { updatePhoneVerifyToken, updateVerifyToken, updateUser, updateLoadingUser } = authSlice.actions;
 
 const getUser = (state: RootState) => state.auth.user;
 export const selectUser = createSelector(
@@ -41,6 +45,9 @@ export const selectUser = createSelector(
 );
 
 export const selectPhoneVerifyToken = (state: RootState) => state.auth.phoneVerifyToken;
+
 export const selectLoadingUser = (state: RootState) => state.auth.loadingUser;
+
+export const selectVerifyToken = (state: RootState) => state.auth.verifyToken;
 
 export default authSlice.reducer;
