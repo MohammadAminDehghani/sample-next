@@ -45,7 +45,8 @@ const LoginForm = withFormik<LoginFormProps, LoginFormValuesInterface>({
 
                 localStorage.setItem('login-token', res.data.token);
                 localStorage.setItem('email', values.email);
-                props.router.push('/auth/login-verify');
+                //props.router.push('/auth/login-verify');
+                props.router.push('/admin');
             }
 
         } catch (error) {
