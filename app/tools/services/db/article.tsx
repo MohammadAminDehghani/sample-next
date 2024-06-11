@@ -1,20 +1,29 @@
+import { number } from "yup";
 import callApi from "../../helpers/callApi";
 import {
   StoreArticleInterface,
   EditArticleInterface,
 } from "@/app/tools/contracts/admin/articles";
 
-export async function GetArticles({ page = 1, per_page = 10 }) {
-  //let res = await callApi().get(`/admin/articles?page=${page}&per_page=${per_page}`);
-  let res = await callApi().get('/admin/articles').then((res) => {
-    return { articles: res?.data };
-  })
-  .catch((error) => {
-    console.log('there is an error to get articles [services.db.article.GetArticles]');
-    console.error(error);
-  });;
+import { useRouter } from "next/navigation";
 
-  return res;
+export async function GetArticles() {
+  //let res = await callApi().get(`/admin/articles?page=${page}&per_page=${per_page}`);
+  //const router = useRouter();
+  let res = await callApi().get('/admin/articles')
+  //console.log('res article', res);
+  return { articles: res?.data } ;
+
+
+  // let res = await callApi().get('/admin/articles').then((res) => {
+  //   return { articles: res?.data };
+  // })
+  // .catch((error) => {
+  //   console.log('there is an error to get articles [services.db.article.GetArticles]');
+  //   console.error(error);
+  // });;
+
+  //return res;
 
   // let res = await callApi().get('/admin/articles');
   // return { articles: res?.data };

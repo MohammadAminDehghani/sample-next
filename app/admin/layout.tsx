@@ -6,6 +6,7 @@ import { Bars3BottomLeftIcon, BellIcon } from "@heroicons/react/24/outline";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 
 import SidebarLayout from "@/app/tools/components/admin/sidebar/sidebarLayouts";
+import { useRouter } from "next/navigation";
 
 const userNavigation = [
   { name: "Your Profile", href: "#" },
@@ -25,6 +26,7 @@ interface Props {
 const AdminPanelLayout = ({ children, pageName }: Props) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  //const router = useRouter();
   // if (loading) return <h1>Loading ...</h1>
 
   // if (error) {

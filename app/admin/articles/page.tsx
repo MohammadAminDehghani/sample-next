@@ -12,6 +12,9 @@ import ArticleListItem from "@/app/tools/components/admin/articles/articleListIt
 import { useSelector } from "react-redux";
 import { selectUser } from "@/app/tools/store/auth";
 import { GetArticles } from "@/app/tools/services/db/article";
+import { handleError } from "@/app/tools/utils/errorHandler";
+//import { useRouter as nextRouter } from "next/router";
+
 
 interface Props {
   searchParams: {
@@ -24,6 +27,9 @@ const AdminArticles = ({ searchParams: { page, per_page } }: Props) => {
   const user = useSelector(selectUser);
   const router = useRouter();
 
+  console.log('my user',user);
+  //const nextRouterInstance = nextRouter();
+
   //page === undefined ? router.push('/admin/articles?page=1') : ''
 
   const { data, error, mutate } = useSWR(
@@ -34,8 +40,11 @@ const AdminArticles = ({ searchParams: { page, per_page } }: Props) => {
     GetArticles
   );
 
-  const total_page = 1;
+  if (error) {
+    handleError(error, router);
+  }
 
+  const total_page = 1;
   const loadingArticles = !data?.articles && !error;
 
   const onPageChangeHandler = ({ selected }: { selected: number }) => {
@@ -46,7 +55,18 @@ const AdminArticles = ({ searchParams: { page, per_page } }: Props) => {
     router.push(`/admin/articles${show === true ? "?create-article" : ""}`);
   };
 
+  // const checkLogin = (data:any) => {
+  //   let status = data?.status;
+  //   if (status !== 200 && status !==undefined){
+  //     router.push('/auth/login');
+  //   }
+  // };
+
+
+  // checkLogin(data);
+
   return (
+
     <>
       {user.canAccess("add_new_article") && (
         <Modal setShow={() => setShowCreateArticle(false)}>
@@ -128,7 +148,7 @@ const AdminArticles = ({ searchParams: { page, per_page } }: Props) => {
                   </table>
                 ) : (
                   <EmptyList
-                    title="Nothing to show!"
+                    title="Nothing to show!!!"
                     description="please add some articles to the list"
                   />
                 )}
