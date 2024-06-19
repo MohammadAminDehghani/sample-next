@@ -8,6 +8,11 @@ import { withFormik } from "formik";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Router from "next/router";
 import * as yup from 'yup';
+import { updateUser } from "../../store/auth";
+import { useAppDispatch } from "../../hooks";
+import { toast } from "react-toastify";
+import { storeLoginToken } from "../../helpers/auth";
+import { UserType } from "../../models/user";
 
 const loginFormValidationSchema = yup.object({
     email: yup.string().email('Must be a valid email').required('Email is required'),
@@ -19,6 +24,8 @@ interface LoginFormProps {
     email?: string,
     password?: string,
     setToken : (token:string) => void,
+    setUser : (user:UserType) => void,
+    clearToken : () => void,
     router: AppRouterInstance
 }
 
@@ -31,9 +38,10 @@ const LoginForm = withFormik<LoginFormProps, LoginFormValuesInterface>({
     handleSubmit: async (values, { props, setFieldError }) => {
 
         try {
+            
             console.log('values', values);
             const res = await callApi().post('/auth/login', values);
-            console.log('res', res);
+            console.log('result', res);
             if (res.status === 200) {
                 // props.setCookie('login-token', res.data.token, {
                 //     path: '/',
@@ -43,10 +51,21 @@ const LoginForm = withFormik<LoginFormProps, LoginFormValuesInterface>({
                 // });
                 // Router.push('/');
 
-                localStorage.setItem('login-token', res.data.token);
-                localStorage.setItem('email', values.email);
-                //props.router.push('/auth/login-verify');
+                // console.log('res?.data?.user', res?.data?.user);
+                // localStorage.setItem('login-token', res.data.token);
+                // localStorage.setItem('user', res?.data?.user);
+                // localStorage.setItem('email', res?.data?.user?.email);
+
+
+                toast.success('You Logged in successfully');
+                storeLoginToken(res.data.token);
+                props.setUser(res?.data?.user);
+                props.clearToken();
+
+
                 props.router.push('/admin');
+                // const dispatch = useAppDispatch();
+                // dispatch(updateUser(res?.data?.user));
             }
 
         } catch (error) {

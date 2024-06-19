@@ -9,9 +9,8 @@ import { useRouter } from "next/navigation";
 
 export async function GetArticles() {
   //let res = await callApi().get(`/admin/articles?page=${page}&per_page=${per_page}`);
-  //const router = useRouter();
+
   let res = await callApi().get('/admin/articles')
-  //console.log('res article', res);
   return { articles: res?.data } ;
 
 
@@ -22,11 +21,6 @@ export async function GetArticles() {
   //   console.log('there is an error to get articles [services.db.article.GetArticles]');
   //   console.error(error);
   // });;
-
-  //return res;
-
-  // let res = await callApi().get('/admin/articles');
-  // return { articles: res?.data };
   
 }
 

@@ -2,7 +2,9 @@
 
 export interface UserType {
     id: number;
+    admin : boolean;
     name : string;
+    email : string;
     permissions : string[]
 }
 

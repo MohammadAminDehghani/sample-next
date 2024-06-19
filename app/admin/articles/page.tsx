@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "@/app/tools/store/auth";
 import { GetArticles } from "@/app/tools/services/db/article";
 import { handleError } from "@/app/tools/utils/errorHandler";
+import { useCookies } from "react-cookie";
 //import { useRouter as nextRouter } from "next/router";
 
 
@@ -24,11 +25,16 @@ interface Props {
 }
 
 const AdminArticles = ({ searchParams: { page, per_page } }: Props) => {
+  const cookieuser = useCookies(['user']);
+  console.log('cookieuser', cookieuser);
   const user = useSelector(selectUser);
   const router = useRouter();
 
   console.log('my user',user);
   //const nextRouterInstance = nextRouter();
+
+  const activeuser = useSelector(selectUser);
+  console.log('active user',activeuser);
 
   //page === undefined ? router.push('/admin/articles?page=1') : ''
 
