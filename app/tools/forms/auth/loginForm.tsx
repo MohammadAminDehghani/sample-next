@@ -23,9 +23,9 @@ interface LoginFormProps {
     setCookie: any,
     email?: string,
     password?: string,
-    setToken : (token:string) => void,
+    setVerifyToken : (token:string) => void,
     setUser : (user:UserType) => void,
-    clearToken : () => void,
+    clearVerifyToken : () => void,
     router: AppRouterInstance
 }
 
@@ -51,18 +51,20 @@ const LoginForm = withFormik<LoginFormProps, LoginFormValuesInterface>({
                 // });
                 // Router.push('/');
 
-                // console.log('res?.data?.user', res?.data?.user);
+                // console.log('res?.data', res?.data);
                 // localStorage.setItem('login-token', res.data.token);
                 // localStorage.setItem('user', res?.data?.user);
                 // localStorage.setItem('email', res?.data?.user?.email);
 
 
                 toast.success('You Logged in successfully');
-                storeLoginToken(res.data.token);
+                //storeLoginToken(res.data.token);
+                
+                
                 props.setUser(res?.data?.user);
-                props.clearToken();
-
-
+                props.clearVerifyToken();
+                props.setVerifyToken(res?.data?.token);
+                localStorage.setItem('login-token', res.data.token);
                 props.router.push('/admin');
                 // const dispatch = useAppDispatch();
                 // dispatch(updateUser(res?.data?.user));

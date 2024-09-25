@@ -25,6 +25,7 @@ const Login = () => {
   const token = useAppSelector(selectVerifyToken);
 
   const setVerifyToken = (token: string) => {
+        console.log('token set shod');
     dispatch(updateVerifyToken(token));
   };
 
@@ -33,18 +34,19 @@ const Login = () => {
   };
 
   const clearVerifyToken = () => {
+    console.log('token pak shod');
     dispatch(updateVerifyToken(undefined));
   };
 
-  useEffect(() => {
-    if (token === undefined) {
-      router.push("/auth/login");
-    }
+  // useEffect(() => {
+  //   if (token === undefined) {
+  //     router.push("/auth/login");
+  //   }
 
-    return () => {
-      clearVerifyToken();
-    };
-  }, [token]);
+  //   return () => {
+  //     clearVerifyToken();
+  //   };
+  // }, [token]);
 
   return (
     <div className="mt-5 vh-100 d-flex flex-column justify-content-center align-items-center">
@@ -52,10 +54,10 @@ const Login = () => {
         <h2>Login page!</h2>
       </div>
       <LoginForm
-        setToken={setVerifyToken}
+        setVerifyToken={setVerifyToken}
         setCookie={setCookie}
         router={router}
-        clearToken={clearVerifyToken}
+        clearVerifyToken={clearVerifyToken}
         setUser ={setUser}
       />
       {/* <LoginFormPhone setToken={setPhoneVerifyToken} setCookie={setCookie} router={router} /> */}

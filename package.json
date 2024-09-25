@@ -40,6 +40,7 @@
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.7",
+    "@types/cors": "^2.8.17",
     "autoprefixer": "^10.4.16",
     "npm-force-resolutions": "^0.0.10",
     "postcss": "^8.4.31",

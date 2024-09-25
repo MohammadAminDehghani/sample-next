@@ -10,7 +10,7 @@ import ReactCustomPaginate from "@/app/tools/components/shared/reactCutsomPagina
 import EmptyList from "@/app/tools/components/shared/emptyList";
 import ArticleListItem from "@/app/tools/components/admin/articles/articleListItem";
 import { useSelector } from "react-redux";
-import { selectUser } from "@/app/tools/store/auth";
+import { selectUser, selectVerifyToken } from "@/app/tools/store/auth";
 import { GetArticles } from "@/app/tools/services/db/article";
 import { handleError } from "@/app/tools/utils/errorHandler";
 import { useCookies } from "react-cookie";
@@ -25,16 +25,19 @@ interface Props {
 }
 
 const AdminArticles = ({ searchParams: { page, per_page } }: Props) => {
-  const cookieuser = useCookies(['user']);
-  console.log('cookieuser', cookieuser);
-  const user = useSelector(selectUser);
+  
+  
   const router = useRouter();
 
+  const user = useSelector(selectUser);
   console.log('my user',user);
-  //const nextRouterInstance = nextRouter();
 
-  const activeuser = useSelector(selectUser);
-  console.log('active user',activeuser);
+  const token = useSelector(selectVerifyToken);
+  console.log('my token',token);
+
+  const token2 = localStorage.getItem('login-token');
+  console.log('my token [localstorage]',token2);
+
 
   //page === undefined ? router.push('/admin/articles?page=1') : ''
 
@@ -46,9 +49,9 @@ const AdminArticles = ({ searchParams: { page, per_page } }: Props) => {
     GetArticles
   );
 
-  if (error) {
-    handleError(error, router);
-  }
+  // if (error) {
+  //   handleError(error, router);
+  // }
 
   const total_page = 1;
   const loadingArticles = !data?.articles && !error;

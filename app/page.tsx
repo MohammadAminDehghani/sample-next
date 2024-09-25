@@ -1,14 +1,8 @@
-"use client"
+"use client";
 
 import { Button } from "primereact/button";
 import { MultiSelect } from "primereact/multiselect";
 import React, { useState, useRef } from "react";
-
-
-// import { Editor } from '@tinymce/tinymce-react';
-
-
-//import 'primereact/resources/themes/bootstrap4-dark-blue/theme.css';
 
 const Home = () => {
   const [selectedCities, setSelectedCities] = useState(null);
@@ -17,24 +11,15 @@ const Home = () => {
     { name: "Rome", code: "RM" },
     { name: "London", code: "LDN" },
     { name: "Istanbul", code: "IST" },
-    { name: "Paris", code: "PRS" },
   ];
 
-
-
-  //ckeditor
-  // const editorRef = useRef(null);
-  // const log = () => {
-  // if (editorRef.current) {
-  //     console.log(editorRef.current.getContent());
-  // }
-
-
   return (
-    <>
+    <div className="p-10">
+      <div>Professors List</div>
       <div>
-        Hello World!
-        <Button>test</Button>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-4 m-3 rounded">
+          Button
+        </button>
       </div>
       <div className="container">
         <div className="card flex justify-content-center">
@@ -51,7 +36,7 @@ const Home = () => {
         </div>
       </div>
 
-        {/* <Editor
+      {/* <Editor
             onInit={(evt, editor) => editorRef.current = editor}
             initialValue="<p>This is the initial content of the editor.</p>"
             init={{
@@ -69,7 +54,7 @@ const Home = () => {
             }}
         />
         <button onClick={log}>Log editor content</button> */}
-        </>
+    </div>
   );
 };
 

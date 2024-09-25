@@ -14,7 +14,7 @@ const callApi = (): AxiosInstance => {
   //const nextRouterInstance = nextRouter();
 
   const axiosInstance = axios.create({
-    baseURL: "http://localhost:3001/api",
+    baseURL: "http://localhost:8000/api",
     withCredentials: true, // Allow sending cookies with requests
   });
 
@@ -23,6 +23,7 @@ const callApi = (): AxiosInstance => {
       config.withCredentials = true;
 
       const token = localStorage.getItem("login-token");
+      //const token = useAppSelector(selectVerifyToken);
       if (token) {
         config.headers["Authorization"] = `Bearer ${token}`;
       }
