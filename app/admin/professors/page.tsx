@@ -77,7 +77,7 @@ const AdminProfessors = ({ searchParams: { page, per_page } }: Props) => {
           router={router}
           professor={editableProfessor}
           professorsMutate={mutate}
-          setEditableProfessor={setEditableProfessor}
+          setFilterableProfessor={setEditableProfessor}
           setShowCreateProfessor={setShowCreateProfessor}
         />
 

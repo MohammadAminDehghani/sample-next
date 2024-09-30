@@ -14,6 +14,7 @@ interface AuthState {
 const initialState: AuthState = {
   loadingUser: true,
   phoneVerifyToken: undefined,
+  verifyToken: undefined,
   user: undefined,
 };
 
@@ -45,10 +46,10 @@ export const selectUser = createSelector(
   (user) => new User(user)
 );
 
-export const selectPhoneVerifyToken = (state: RootState) => state.auth.phoneVerifyToken;
+export const selectPhoneVerifyToken = (state: RootState) => {return state.auth.phoneVerifyToken;}
 
-export const selectLoadingUser = (state: RootState) => state.auth.loadingUser;
+export const selectLoadingUser = (state: RootState) => {return state.auth.loadingUser;}
 
-export const selectVerifyToken = (state: RootState) => state.auth.verifyToken;
+export const selectVerifyToken = (state: RootState) => {return state.auth.verifyToken;}
 
 export default authSlice.reducer;

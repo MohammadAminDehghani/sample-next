@@ -22,19 +22,22 @@ const Login = () => {
 
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const token = useAppSelector(selectVerifyToken);
+  //const token = useAppSelector(selectVerifyToken);
+
+
 
   const setVerifyToken = (token: string) => {
-        console.log('token set shod');
+        //console.log('token is set');
     dispatch(updateVerifyToken(token));
   };
 
   const setUser = (user: UserType) => {
+    //console.log('setUser is done');
     dispatch(updateUser(user));
   };
 
   const clearVerifyToken = () => {
-    console.log('token pak shod');
+   // console.log('clearVerifyToken');
     dispatch(updateVerifyToken(undefined));
   };
 

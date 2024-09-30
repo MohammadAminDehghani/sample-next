@@ -21,7 +21,7 @@ const useAuth = () => {
         //     }
         // })
 
-        return callApi().get('/user')
+        return callApi().get('/auth/user')
     });
     
 

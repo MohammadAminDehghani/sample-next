@@ -9,8 +9,9 @@ import {
 } from '@heroicons/react/24/outline'
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 
-import useAuth from "../tools/hooks/useAuth"
+import useAuth from "../hooks/useAuth"
 import SidebarLayout from "./admin/sidebar/sidebarLayouts"
+
 
 
 const userNavigation = [
@@ -145,3 +146,4 @@ const AdminPanelLayout = ({ children, pageName }: Props) => {
 
 
 export default AdminPanelLayout;
+//export default withAuth(AdminPanelLayout);

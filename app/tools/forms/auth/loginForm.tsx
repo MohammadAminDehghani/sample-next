@@ -14,6 +14,8 @@ import { toast } from "react-toastify";
 import { storeLoginToken } from "../../helpers/auth";
 import { UserType } from "../../models/user";
 
+
+
 const loginFormValidationSchema = yup.object({
     email: yup.string().email('Must be a valid email').required('Email is required'),
     password: yup.string().min(8, 'min lentgh of pass is 8 char').required('Password is required'),
@@ -26,7 +28,7 @@ interface LoginFormProps {
     setVerifyToken : (token:string) => void,
     setUser : (user:UserType) => void,
     clearVerifyToken : () => void,
-    router: AppRouterInstance
+    router: AppRouterInstance,
 }
 
 const LoginForm = withFormik<LoginFormProps, LoginFormValuesInterface>({
@@ -37,39 +39,30 @@ const LoginForm = withFormik<LoginFormProps, LoginFormValuesInterface>({
     validationSchema: loginFormValidationSchema,
     handleSubmit: async (values, { props, setFieldError }) => {
 
-        try {
-            
-            console.log('values', values);
+        try {            
+
             const res = await callApi().post('/auth/login', values);
-            console.log('result', res);
+
             if (res.status === 200) {
-                // props.setCookie('login-token', res.data.token, {
-                //     path: '/',
-                //     maxAge: 60 * 60 * 24,
-                //     domain: 'localhost',
-                //     sameSite: 'lax'
-                // });
-                // Router.push('/');
-
-                // console.log('res?.data', res?.data);
-                // localStorage.setItem('login-token', res.data.token);
-                // localStorage.setItem('user', res?.data?.user);
-                // localStorage.setItem('email', res?.data?.user?.email);
-
 
                 toast.success('You Logged in successfully');
-                //storeLoginToken(res.data.token);
-                
-                
                 props.setUser(res?.data?.user);
                 props.clearVerifyToken();
                 props.setVerifyToken(res?.data?.token);
-                localStorage.setItem('login-token', res.data.token);
-                props.router.push('/admin');
-                // const dispatch = useAppDispatch();
+                //localStorage.setItem('login-token', res.data.token);
                 // dispatch(updateUser(res?.data?.user));
-            }
 
+                props.setCookie('login-token', res.data.token, {
+                    path: '/',
+                    maxAge: 60 * 60 * 24,
+                    domain: 'localhost',
+                    httpOnly: false, // you can set this to true if you're handling cookies on the server side
+                    secure: true,
+                    //sameSite: 'lax'
+                    sameSite: "Strict"
+                });
+                props.router.push('/admin');
+            }
         } catch (error) {
             if (error instanceof validationErrors) {
                 Object.entries(error.messages).forEach(
@@ -77,7 +70,6 @@ const LoginForm = withFormik<LoginFormProps, LoginFormValuesInterface>({
                 )
             }
         }
-
     }
 })(InnerLoginForm)
 
