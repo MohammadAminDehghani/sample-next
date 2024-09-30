@@ -31,7 +31,7 @@ interface Props {
 const AdminPanelLayout = ({ children, pageName }: Props) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   //const token = useSelector(selectVerifyToken);
-  const [cookies] =  useCookies(["login-token"]);
+  //const [cookies] =  useCookies(["login-token"]);
   const dispatch = useDispatch();
   const loadingUser = useSelector(selectLoadingUser); // You can add a loading state to wait for Redux
   //const token = localStorage.getItem('login-token');
@@ -62,16 +62,90 @@ const AdminPanelLayout = ({ children, pageName }: Props) => {
   //   return null;
   // }
 
+
+
+  const [cookies, setCookie, removeCookie] = useCookies(["login-token"]);
+
+  const Logout = ()=>{
+    removeCookie("login-token");
+    store.dispatch(updateVerifyToken(undefined));
+  } 
+
+  
+  
   useEffect(() => {
     const token = cookies["login-token"];
-    console.log(token);
+  
     if (token) {
-      dispatch(updateVerifyToken(token)); // Hydrate Redux store
+      // Make an API call to verify the token
+      const verifyToken = async () => {
+        try {
+          const res = await fetch("http://localhost:8000/api/auth/verify-token", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
+  
+          if (res.ok) {
+            const data = await res.json();
+            if (data.valid) {
+              dispatch(updateVerifyToken(token)); // Valid token, hydrate Redux store
+            } else {
+              throw new Error("Invalid token");
+            }
+          } else {
+            throw new Error("Token verification failed");
+          }
+        } catch (error) {
+          console.error(error);
+          // Clear token from Redux and cookies, and redirect to login
+          dispatch(updateVerifyToken(undefined));
+          removeCookie("login-token");
+          router.replace("/auth/login");
+        }
+      };
+  
+      verifyToken();
     } else {
       // Redirect if no token
-      router.replace('/auth/login');
+      router.replace("/auth/login");
     }
-  }, [cookies, dispatch, router]);
+  }, [cookies, dispatch, router, removeCookie]);
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // useEffect(() => {
+  //   const token = cookies["login-token"];
+  //   console.log(token);
+  //   if (token) {
+  //     dispatch(updateVerifyToken(token)); // Hydrate Redux store
+  //   } else {
+  //     // Redirect if no token
+  //     router.replace('/auth/login');
+  //   }
+  // }, [cookies, dispatch, router]);
+
+
+
+
+
+
+
+
 
   // const { user, error, loading } = useAuth();
   // console.log(user, error, error?.response?.status, loading);
@@ -144,6 +218,7 @@ const AdminPanelLayout = ({ children, pageName }: Props) => {
                 <button
                   type="button"
                   className="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  onClick={Logout}
                 >
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
