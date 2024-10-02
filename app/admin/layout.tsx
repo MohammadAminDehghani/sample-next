@@ -7,9 +7,9 @@ import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 
 import SidebarLayout from "@/app/tools/components/admin/sidebar/sidebarLayouts";
 import { useRouter } from "next/navigation";
-import useAuth from "../tools/hooks/useAuth";
+
 import store from "../tools/store";
-import { selectLoadingUser, selectUser, selectVerifyToken, updateLoadingUser, updateUser, updateVerifyToken } from "../tools/store/auth";
+import { selectLoadingUser, selectVerifyToken, updateVerifyToken } from "../tools/store/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { useCookies } from "react-cookie";
 
@@ -30,40 +30,11 @@ interface Props {
 
 const AdminPanelLayout = ({ children, pageName }: Props) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  //const token = useSelector(selectVerifyToken);
-  //const [cookies] =  useCookies(["login-token"]);
+
   const dispatch = useDispatch();
   const loadingUser = useSelector(selectLoadingUser); // You can add a loading state to wait for Redux
-  //const token = localStorage.getItem('login-token');
   const router = useRouter();
-  //console.log('token', token)
-  // useEffect(() => {
-  //   // Check if token is updated in Redux after login
-  //   console.log("Redux Token after login:", token);
-  // }, [token]);
-
-
-
-
   const token = useSelector(selectVerifyToken);
-  console.log("Redux Token", token);
-  console.log("if", !loadingUser);
-  //Check token on component mount or when the token updates
-  // useEffect(() => {
-
-  //   if (!token) { // Ensure we check token after loading is complete
-  //     // Redirect to login if no token
-  //     router.replace('/auth/login');
-  //   }
-  // }, [token, router]);
-
-  // // Render nothing if no token (avoids flicker)
-  // if (!token) {
-  //   return null;
-  // }
-
-
-
   const [cookies, setCookie, removeCookie] = useCookies(["login-token"]);
 
   const Logout = ()=>{
@@ -71,8 +42,6 @@ const AdminPanelLayout = ({ children, pageName }: Props) => {
     store.dispatch(updateVerifyToken(undefined));
   } 
 
-  
-  
   useEffect(() => {
     const token = cookies["login-token"];
   
@@ -106,7 +75,7 @@ const AdminPanelLayout = ({ children, pageName }: Props) => {
           router.replace("/auth/login");
         }
       };
-  
+
       verifyToken();
     } else {
       // Redirect if no token
@@ -114,64 +83,6 @@ const AdminPanelLayout = ({ children, pageName }: Props) => {
     }
   }, [cookies, dispatch, router, removeCookie]);
   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // useEffect(() => {
-  //   const token = cookies["login-token"];
-  //   console.log(token);
-  //   if (token) {
-  //     dispatch(updateVerifyToken(token)); // Hydrate Redux store
-  //   } else {
-  //     // Redirect if no token
-  //     router.replace('/auth/login');
-  //   }
-  // }, [cookies, dispatch, router]);
-
-
-
-
-
-
-
-
-
-  // const { user, error, loading } = useAuth();
-  // console.log(user, error, error?.response?.status, loading);
-
-  // useEffect(() => {
-  //   store.dispatch(updateUser(user));
-  //   store.dispatch(updateLoadingUser(loading));
-  // }, [user, error]);
-
-  // console.log("user", selectVerifyToken(state: {auth: AuthState}));
-
-
-  // const router = useRouter();
-  // if (loading) return <h1>Loading ...</h1>
-
-  // console.log('selectUser',selectUser);
-  // if (user === undefined){
-  //     // show error
-  //     router.push('/auth/login')
-  //     return <></>;
-  // }
-
-  // if(! user?.is_admin ) {
-  //     router.push('/')
-  //     return <></>;
-  // }
 
   return (
     <>

@@ -1,50 +1,16 @@
 import Professor from "@/app/tools/models/professor";
-import React, { useState } from "react";
-import DeleteConfirmation from "@/app/tools/components/shared/deleteConfirmation";
-import { toast } from "react-toastify";
-import validationErrors from "@/app/tools/exceptions/validationErrors";
-import { DeleteProfessor } from "@/app/tools/services/db/professor";
+import React from "react";
 import { KeyedMutator } from "swr";
-import { Dispatch, SetStateAction } from "react";
-import { Avatar } from "primereact/avatar";
 
 interface Props {
   professor: Professor;
-  setEditableProfessor: Dispatch<SetStateAction<undefined | Professor>>;
-  setShowCreateProfessor: Dispatch<SetStateAction<boolean>>;
-
   professorsMutate: KeyedMutator<{
     professors: any;
     total_page?: any;
   }>;
 }
 
-export default function ProfessorListItem({
-  professor,
-  professorsMutate,
-  setEditableProfessor,
-  setShowCreateProfessor,
-}: Props) {
-  const [showDeleteConfirmation, setShowDeleteConfirmation] =
-    useState<boolean>(false);
-
-  const handleDeleteConfirmation = async (professor: Professor) => {
-    try {
-      await DeleteProfessor(professor.id);
-      await professorsMutate();
-      toast.success("The professor deleted successfully");
-      setShowDeleteConfirmation(false);
-    } catch (error) {
-      if (error instanceof validationErrors) {
-        Object.entries(error.messages).forEach(([key, value]) =>
-          toast.error(value as string)
-        );
-        return;
-      }
-      toast.error("The professor can't be deleted");
-      console.log(error);
-    }
-  };
+export default function ProfessorListItem({professor}: Props) {
 
   return (
     <>

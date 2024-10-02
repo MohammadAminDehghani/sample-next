@@ -13,7 +13,7 @@ export interface StoreProfessorInterface {
 }
 
 export interface EditProfessorInterface {
-    id:number;
+    _id:string;
     first_name:string | null;
     last_name:string | null;
     affiliation:string | null;
@@ -23,11 +23,10 @@ export interface EditProfessorInterface {
     url:string | null;
     url_response:number | null;
     address:string | null;
-    department_id:string | null;
 }
 
 export interface FilterProfessorInterface {
-    id:number;
+    _id:string;
     first_name:string | null;
     last_name:string | null;
     affiliation:string | null;
@@ -37,5 +36,4 @@ export interface FilterProfessorInterface {
     url:string | null;
     url_response:number | null;
     address:string | null;
-    department_id:string | null;
 }

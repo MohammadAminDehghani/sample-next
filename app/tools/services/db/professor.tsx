@@ -2,7 +2,6 @@ import callApi from "../../helpers/callApi";
 import {
   StoreProfessorInterface,
   EditProfessorInterface,
-  FilterProfessorInterface,
 } from "@/app/tools/contracts/admin//professors";
 
 //export async function GetProfessors({ page = 1, per_page = 10 }) {
@@ -14,20 +13,16 @@ export async function GetProfessors() {
   return { professors: res?.data };
 }
 
-export async function FilterProfessor(values: FilterProfessorInterface) {
+export async function FilterProfessors(values: any | null) {
   let res = await callApi().post(`/admin/professors/filter`, {
     ...values,
-    //description: values.description,
   });
-
-  console.log(res)
-  return res;
+  return { professors: res?.data };;
 }
 
 export async function ShowProfessor(professorId: string | string) {
   if (professorId !== 'undefined') {
     let res = await callApi().get(`/admin/professors/${professorId}/show`, {});
-    //console.log('res', res?.data)
     return res?.data;
   }
 }
@@ -36,22 +31,19 @@ export async function StoreProfessor(values: StoreProfessorInterface) {
   console.log('values',values)
   return await callApi().post("/admin/professors", {
     ...values,
-    //body: values.body,
   });
 }
 
 export async function EditProfessor(professorId: string | string) {
   if (professorId !== 'undefined') {
     let res = await callApi().get(`/admin/professors/${professorId}/edit`, {});
-    //console.log('res', res?.data)
     return res?.data;
   }
 }
 
 export async function UpdateProfessor(values: EditProfessorInterface) {
-  return await callApi().post(`/admin/professors/${values.id}/update`, {
+  return await callApi().post(`/admin/professors/${values._id}/update`, {
     ...values,
-    //description: values.description,
   });
 }
 
