@@ -37,7 +37,7 @@ const AdminPanelLayout = ({ children, pageName }: Props) => {
   const token = useSelector(selectVerifyToken);
 
   const user = useSelector(selectUser);
-  //console.log(user);
+  console.log(user);
 
   const [cookies, setCookie, removeCookie] = useCookies(["login-token"]);
 
