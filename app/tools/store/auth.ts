@@ -39,7 +39,7 @@ export const authSlice = createSlice({
 
 export const { updatePhoneVerifyToken, updateVerifyToken, updateUser, updateLoadingUser } = authSlice.actions;
 
-const getUser = (state: RootState) => state.auth.user;
+const getUser = (state: RootState) => {return state.auth.user};
 
 export const selectUser = createSelector(
   getUser,

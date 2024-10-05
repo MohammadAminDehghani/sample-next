@@ -1,60 +1,92 @@
 "use client";
 
-import { Button } from "primereact/button";
-import { MultiSelect } from "primereact/multiselect";
-import React, { useState, useRef } from "react";
 
-const Home = () => {
-  const [selectedCities, setSelectedCities] = useState(null);
-  const cities = [
-    { name: "New York", code: "NY" },
-    { name: "Rome", code: "RM" },
-    { name: "London", code: "LDN" },
-    { name: "Istanbul", code: "IST" },
-  ];
+import { useRouter } from "next/navigation";
+import useSWR from "swr";
+import Professor from "@/app/tools/models/professor";
+import LoadingBox from "@/app/tools/components/shared/loadingBox";
+import ReactCustomPaginate from "@/app/tools/components/shared/reactCutsomPaginate";
+import EmptyList from "@/app/tools/components/shared/emptyList";
+import ProfessorListItem from "@/app/tools/components/admin/professors/professorListItem";
+import { FilterProfessors } from "@/app/tools/services/db/professor";
+import FilterProfessorForm from "@/app/tools/forms/admin/professors/filterProfessorForm";
+
+interface Props {
+  searchParams: {
+    page: any;
+    per_page: string;
+  };
+}
+
+const Home = ({ searchParams: { page, per_page } }: Props) => {
+
+  const router = useRouter();
+
+  const { data, error, mutate } = useSWR(
+    {
+      url: "/admin/professors",
+      page,
+    },
+    FilterProfessors
+  );
+
+  const total_page = 1;
+  const loadingProfessors = !data?.professors && !error;
+
+  const onPageChangeHandler = ({ selected }: { selected: number }) => {
+    router.push(`/admin/professors?page=${selected + 1}`);
+  };
 
   return (
-    <div className="p-10">
-      <div>Professors List</div>
-      <div>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-4 m-3 rounded">
-          Button
-        </button>
-      </div>
-      <div className="container">
-        <div className="card flex justify-content-center">
-          <MultiSelect
-            value={selectedCities}
-            onChange={(e) => setSelectedCities(e.value)}
-            options={cities}
-            optionLabel="name"
-            filter
-            placeholder="Select Cities"
-            maxSelectedLabels={3}
-            className="w-full md:w-20rem"
-          />
+    <>
+      <div className="container p-10">
+        <FilterProfessorForm
+          router={router}
+          professorsMutate={mutate}
+        />
+        <h2 className="text-3xl pt-20">List of professors</h2>
+        <div className="mt-8 flex flex-col">
+          <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+              <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                {loadingProfessors ? (
+                  <div className="p-5">
+                    <LoadingBox />
+                  </div>
+                ) : data?.professors?.length > 0 ? (
+                  <div className="p-5">
+                    {data?.professors.map((professor: Professor) => (
+                        <ProfessorListItem
+                          key={professor._id}
+                          professor={professor}
+                          professorsMutate={mutate}
+                        />
+                    ))}
+                  </div>
+                ) : (
+                  <EmptyList
+                    title="Nothing to show!"
+                    description="please add some professors to the list"
+                  />
+                )}
+
+                {total_page > 1 ? (
+                  <div className="p-1 border-t border-gray-200">
+                    <ReactCustomPaginate
+                      onPageChangeHandler={onPageChangeHandler}
+                      pageCount={total_page}
+                      page={Number(page)}
+                    />
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      {/* <Editor
-            onInit={(evt, editor) => editorRef.current = editor}
-            initialValue="<p>This is the initial content of the editor.</p>"
-            init={{
-            height: 500,
-            menubar: false,
-            plugins: [
-               'a11ychecker','advlist','advcode','advtable','autolink','checklist','export',
-               'lists','link','image','charmap','preview','anchor','searchreplace','visualblocks',
-               'powerpaste','fullscreen','formatpainter','insertdatetime','media','table','help','wordcount'
-            ],
-            toolbar: 'undo redo | casechange blocks | bold italic backcolor | ' +
-               'alignleft aligncenter alignright alignjustify | ' +
-               'bullist numlist checklist outdent indent | removeformat | a11ycheck code table help'
-            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-            }}
-        />
-        <button onClick={log}>Log editor content</button> */}
-    </div>
+    </>
   );
 };
 

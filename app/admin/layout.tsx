@@ -9,7 +9,7 @@ import SidebarLayout from "@/app/tools/components/admin/sidebar/sidebarLayouts";
 import { useRouter } from "next/navigation";
 
 import store from "../tools/store";
-import { selectLoadingUser, selectVerifyToken, updateVerifyToken } from "../tools/store/auth";
+import { selectLoadingUser, selectUser, selectVerifyToken, updateVerifyToken } from "../tools/store/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { useCookies } from "react-cookie";
 
@@ -35,6 +35,10 @@ const AdminPanelLayout = ({ children, pageName }: Props) => {
   const loadingUser = useSelector(selectLoadingUser); // You can add a loading state to wait for Redux
   const router = useRouter();
   const token = useSelector(selectVerifyToken);
+
+  const user = useSelector(selectUser);
+  //console.log(user);
+
   const [cookies, setCookie, removeCookie] = useCookies(["login-token"]);
 
   const Logout = ()=>{
@@ -61,6 +65,7 @@ const AdminPanelLayout = ({ children, pageName }: Props) => {
             const data = await res.json();
             if (data.valid) {
               dispatch(updateVerifyToken(token)); // Valid token, hydrate Redux store
+              localStorage.setItem("login-token", token)
             } else {
               throw new Error("Invalid token");
             }

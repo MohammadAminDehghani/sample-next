@@ -7,11 +7,14 @@ import { handleError } from "@/app/tools/utils/errorHandler";
 //import { useRouter } from "next/router";
 //import { NextRouter } from "next/router";
 import { useRouter } from 'next/navigation';
+import { cookies } from "next/headers";
+import { useCookies } from "react-cookie";
 
 const callApi = (): AxiosInstance => {
   //const router = useRouter();
   //const { handleError } = useError();
   //const nextRouterInstance = nextRouter();
+  //const [cookies, setCookie, removeCookie] = useCookies(["login-token"]);
 
   const axiosInstance = axios.create({
     baseURL: "http://localhost:8000/api",
@@ -23,10 +26,18 @@ const callApi = (): AxiosInstance => {
       config.withCredentials = true;
 
       const token = localStorage.getItem("login-token");
+      
       //const token = useAppSelector(selectVerifyToken);
+      //const token = cookies["login-token"];
+
+      //console.log('tokenCallApi', token);
+
       if (token) {
         config.headers["Authorization"] = `Bearer ${token}`;
       }
+
+      // Set content type for JSON payloads
+      config.headers["Content-Type"] = "application/json";
 
       return config;
     },
